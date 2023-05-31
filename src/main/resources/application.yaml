@@ -1,0 +1,30 @@
+#spring:
+#  security:
+#    oauth2:
+#      client:
+#        registration:
+#          google:
+#            client-id: 284277510225-gjaiv85vurv74doko025203h2fktlbim.apps.googleusercontent.com
+#            client-secret:
+##  config:
+#    location: secret
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/social_media_API
+
+#    #      secret: db.username
+
+#    #      secret: db.password
+#    driver-class-name: org.postgresql.Driver
+#
+
+#  jpa:
+#      database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+#      show-sql: true
+#      hibernate:
+#        ddl-auto: validate
+#  liquibase:
+#      enabled: true
+##  datasource:
+##      url: jdbc:postgresql:file:./db # в корне проект файл бд db.mv.db
+##
+##
