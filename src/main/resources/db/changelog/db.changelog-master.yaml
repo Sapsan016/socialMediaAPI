@@ -30,6 +30,58 @@ databaseChangeLog:
                     constraints:
                       nullable: false
                       unique: true
-
+  - changeSet:
+      id: create_user_friends
+      author: Mikhail
+      changes:
+        - createTable:
+            tableName: user_friends
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: users
+                    nullable: false
+              - column:
+                  name: friend_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: users
+                    nullable: false
+  - changeSet:
+      id: create_posts
+      author: Mikhail
+      changes:
+        - createTable:
+            tableName: posts
+            columns:
+              - column:
+                  name: post_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: header
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: text
+                  type: varchar(1000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: imageRef
+                  type: varchar(100)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created
+                  type: date
+                  constraints:
+                    nullable: false
 
 
