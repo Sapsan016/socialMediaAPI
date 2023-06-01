@@ -49,6 +49,39 @@ databaseChangeLog:
                   constraints:
                     foreignKeyName: users
                     nullable: false
-
+  - changeSet:
+      id: create_posts
+      author: Mikhail
+      changes:
+        - createTable:
+            tableName: posts
+            columns:
+              - column:
+                  name: post_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: header
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: text
+                  type: varchar(1000)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: imageRef
+                  type: varchar(100)
+                  constraints:
+                    nullable: true
+              - column:
+                  name: created
+                  type: date
+                  constraints:
+                    nullable: false
 
 

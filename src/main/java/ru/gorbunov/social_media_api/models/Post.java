@@ -20,7 +20,7 @@ public class Post {
     Long id;
     String header;
     String text;
-    File image;
+    String imageRef;
     LocalDateTime created;
 
 }
