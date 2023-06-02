@@ -7,11 +7,14 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.gorbunov.social_media_api.dto.AddPostDto;
+import ru.gorbunov.social_media_api.dto.JwtRequest;
 import ru.gorbunov.social_media_api.dto.PostDto;
 import ru.gorbunov.social_media_api.mappers.PostMapper;
+import ru.gorbunov.social_media_api.models.User;
 import ru.gorbunov.social_media_api.services.UserService;
 
 import java.util.Collections;
@@ -25,19 +28,6 @@ import java.util.Collections;
 public class UserController {
     UserService userService;
 
-
-//    @PostMapping("/registration")
-//    public ResponseEntity<?> addUser(@RequestBody JwtRequest reqRequest) {
-//        User user = new User();
-//        user.setUsername(reqRequest.getUsername());
-//        user.setPassword(passwordEncoder.encode(reqRequest.getPassword()));
-//        user.setEmail(reqRequest.getEmail());
-//        user.setRoles(Collections.singleton(roleRepository.getReferenceById(1L)));
-//
-//        userRepository.save(user);
-//
-//        return ResponseEntity.ok(new UserDto(user.getUsername(), user.getEmail()));
-//    }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
