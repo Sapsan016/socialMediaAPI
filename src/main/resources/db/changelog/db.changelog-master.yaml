@@ -130,6 +130,53 @@ databaseChangeLog:
                   constraints:
                     foreignKeyName: users
                     nullable: false
+  - changeSet:
+      id: create_events
+      author: Mikhail
+      changes:
+        - createTable:
+            tableName: events
+            columns:
+              - column:
+                  name: event_id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: timestamp
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: eventType
+                  type: varchar(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: operation
+                  type: varchar(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: entity_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: change_user_friends
+      author: Mikhail
+      changes:
+        - addColumn:
+            tableName: user_friends
+            columns:
+              - column:
+                  name: friendship
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+
 
 
 
