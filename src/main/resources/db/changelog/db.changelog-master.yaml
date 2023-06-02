@@ -117,6 +117,21 @@ databaseChangeLog:
                   constraints:
                     foreignKeyName: roles
                     nullable: false
+  - changeSet:
+      id: change_posts
+      author: Mikhail
+      changes:
+        - addColumn:
+            tableName: posts
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: users
+                    nullable: false
+
+
 
 
 

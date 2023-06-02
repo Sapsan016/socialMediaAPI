@@ -23,4 +23,8 @@ public class Post {
     String imageRef;
     LocalDateTime created;
 
+    @JoinColumn(name = "user_id")
+    @ManyToOne
+    User user;
+
 }

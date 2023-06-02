@@ -22,7 +22,7 @@ import java.util.Collections;
 @RequiredArgsConstructor
 @Transactional
 public class RegistrationController {
-    BCryptPasswordEncoder passwordEncoder;
+   // BCryptPasswordEncoder passwordEncoder;
 
 //    @PostMapping()
 //    public ResponseEntity<?> addUser(@RequestBody JwtRequest reqRequest) {

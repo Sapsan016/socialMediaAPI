@@ -18,6 +18,8 @@ import ru.gorbunov.social_media_api.models.User;
 import ru.gorbunov.social_media_api.services.UserService;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
@@ -26,14 +28,37 @@ import java.util.Collections;
 @RequiredArgsConstructor
 @Transactional
 public class UserController {
+
+
     UserService userService;
 
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    public PostDto addPost(@RequestBody @Valid AddPostDto postAddDto) {
-        log.info("UserController: Request to add a new post: {}", postAddDto.toString());
-        return PostMapper.toDto(userService.addNewPost(postAddDto));
+    @PostMapping("/{userId}")
+    public PostDto addPost(@RequestBody @Valid AddPostDto postAddDto, @PathVariable Long userId) {
+        log.info("UserController: Request to add a new post: {} by user with ID = {}", postAddDto.toString(), userId);
+        return PostMapper.toDto(userService.addNewPost(postAddDto, userId));
     }
+
+    @GetMapping("/{postId}")
+    public PostDto getPostById(@PathVariable Long postId) {
+        log.info("UserController: Request to find a post wit ID = {}", postId);
+        return PostMapper.toDto(userService.findPostById(postId));
+    }
+
+
+    @GetMapping("/{userId}")
+    public List<PostDto> getUserPosts(@RequestParam(defaultValue = "0") Integer from,
+                                      @RequestParam(defaultValue = "10") Integer size,
+                                      @RequestParam(defaultValue = "NEW") String sort,
+                                      @PathVariable String userId) {
+        log.info("UserController: Request to find posts, created by user with ID = {}, skip first: {}, " +
+                "list size: {}, sorted by creation: {}", userId, from, size, sort);
+        return userService.findUserPosts(userId, from, size, sort)
+                .stream()
+                .map(PostMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 
 }

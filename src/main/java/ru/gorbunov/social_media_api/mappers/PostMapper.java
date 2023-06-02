@@ -13,7 +13,8 @@ public class PostMapper {
                 addDto.getHeader(),
                 addDto.getText(),
                 addDto.getImageRef(),
-                LocalDateTime.now()
+                LocalDateTime.now(),
+                null
         );
     }
 
@@ -23,7 +24,8 @@ public class PostMapper {
                 post.getHeader(),
                 post.getText(),
                 post.getImageRef(),
-                post.getCreated()
+                post.getCreated(),
+                UserMapper.toDto(post.getUser())
         );
     }
 }
