@@ -41,11 +41,39 @@ public class UserServiceImpl implements UserService {
     public List<Post> findUserPosts(String userId, Integer from, Integer size, String sort) {
         if (sort.equals(UP)) {
             log.info("Getting posts list, created by user with ID = {}, sort by creation: {}, skip: {}, size: {}",
-                    userId,sort, from, size);
+                    userId, sort, from, size);
             return postRepository.getAllStudentsSortAsc(userId, from, size);
         }
         log.info("Getting posts list, created by user with ID = {}, sort by creation: {}, skip: {}, size: {}",
-                userId,sort, from, size);
+                userId, sort, from, size);
         return postRepository.getAllStudentsSortDesc(userId, from, size);
     }
+
+    @Override
+    public Post updatePost(Long postId, AddPostDto addPostDto) {
+        Post postToUpdate = findPostById(postId);
+        checkUpdate(postToUpdate, addPostDto);
+        postRepository.save(postToUpdate);
+        log.info("Updated post with ID = {}", postId);
+        return postToUpdate;
+    }
+
+    @Override
+    public void removePost(Long postId) {
+        Post studentToRemove = findPostById(postId);
+        postRepository.delete(studentToRemove);
+        log.info("Removed post with ID = {}", postId);
+    }
+
+
+    private void checkUpdate(Post postToUpdate, AddPostDto addPostDto) {
+        if (addPostDto.getHeader() != null)
+            postToUpdate.setHeader(addPostDto.getHeader());
+        if (addPostDto.getText() != null)
+            postToUpdate.setText(addPostDto.getText());
+        if (addPostDto.getImageRef() != null)
+            postToUpdate.setImageRef(addPostDto.getImageRef());
+    }
+
 }
+

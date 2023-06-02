@@ -13,4 +13,8 @@ public interface UserService {
     Post findPostById(Long postId);
 
     List<Post> findUserPosts(String userId, Integer from, Integer size, String sort);
+
+    Post updatePost(Long postId, AddPostDto addPostDto);
+
+    void removePost(Long postId);
 }
