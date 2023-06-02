@@ -4,27 +4,18 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.io.File;
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "posts")
-public class Post {
+@Table(name = "roles")
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    String header;
-    String text;
-    String imageRef;
-    LocalDateTime created;
-
-    @JoinColumn(name = "user_id")
-    @ManyToOne
-    User user;
-
+    private int id;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role_name")
+    private RoleName name;
 }
