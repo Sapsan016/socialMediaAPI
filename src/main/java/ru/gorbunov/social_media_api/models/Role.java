@@ -3,6 +3,7 @@ package ru.gorbunov.social_media_api.models;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import ru.gorbunov.social_media_api.enums.RoleName;
 
 @Getter
 @Setter
