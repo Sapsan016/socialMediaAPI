@@ -17,4 +17,6 @@ public interface UserService {
     Post updatePost(Long postId, AddPostDto addPostDto);
 
     void removePost(Long postId);
+
+    void addToFriends(Long userId, Long friendId);
 }

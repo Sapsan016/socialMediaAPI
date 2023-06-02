@@ -70,5 +70,10 @@ public class UserController {
         userService.removePost(postId);
     }
 
+    @PutMapping(value = "/{userId}/friends/{friendId}")
+    public void addToFriends(@PathVariable Long userId, @PathVariable Long friendId) {
+        userService.addToFriends(userId, friendId);
+    }
+
 
 }

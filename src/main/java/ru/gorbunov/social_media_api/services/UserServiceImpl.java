@@ -65,6 +65,11 @@ public class UserServiceImpl implements UserService {
         log.info("Removed post with ID = {}", postId);
     }
 
+    @Override
+    public void addToFriends(Long userId, Long friendId) {
+
+    }
+
 
     private void checkUpdate(Post postToUpdate, AddPostDto addPostDto) {
         if (addPostDto.getHeader() != null)

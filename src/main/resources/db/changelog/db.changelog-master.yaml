@@ -130,6 +130,30 @@ databaseChangeLog:
                   constraints:
                     foreignKeyName: users
                     nullable: false
+  - changeSet:
+      id: create_user_friends
+      author: Mikhail
+      changes:
+        - createTable:
+            tableName: user_friends
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: users
+                    nullable: false
+              - column:
+                  name: friend_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: users
+                    nullable: false
+              - column:
+                  name: friendship
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
 
 
 
