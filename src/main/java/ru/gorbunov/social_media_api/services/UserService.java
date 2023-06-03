@@ -1,6 +1,7 @@
 package ru.gorbunov.social_media_api.services;
 
 import ru.gorbunov.social_media_api.dto.AddPostDto;
+import ru.gorbunov.social_media_api.enums.FriendshipStatus;
 import ru.gorbunov.social_media_api.models.Post;
 
 import java.util.Arrays;
@@ -19,4 +20,6 @@ public interface UserService {
     void removePost(Long postId);
 
     void addToFriends(Long userId, Long friendId);
+
+    public void confirmOrRejectFriendship(Long userId, Long friendId, FriendshipStatus friendshipStatus);
 }
