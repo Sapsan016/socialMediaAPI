@@ -176,6 +176,22 @@ databaseChangeLog:
                   type: varchar(20)
                   constraints:
                     nullable: false
+  - changeSet:
+      id: insert_roles
+      author: Mikhail
+      changes:
+        - insert:
+            tableName: roles
+            columns:
+              name: role_name
+              value: ROLE_USER
+        - insert:
+            tableName: roles
+            columns:
+              name: role_name
+              value: ROLE_ADMIN
+
+
 
 
 

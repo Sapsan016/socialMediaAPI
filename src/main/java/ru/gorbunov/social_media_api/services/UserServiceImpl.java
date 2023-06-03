@@ -2,6 +2,7 @@ package ru.gorbunov.social_media_api.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.gorbunov.social_media_api.dto.AddPostDto;
 import ru.gorbunov.social_media_api.enums.EventType;
@@ -12,10 +13,9 @@ import ru.gorbunov.social_media_api.exception.ValidationException;
 import ru.gorbunov.social_media_api.mappers.PostMapper;
 import ru.gorbunov.social_media_api.models.Event;
 import ru.gorbunov.social_media_api.models.Post;
-import ru.gorbunov.social_media_api.repositories.EventRepository;
-import ru.gorbunov.social_media_api.repositories.FriendsRepository;
-import ru.gorbunov.social_media_api.repositories.PostRepository;
-import ru.gorbunov.social_media_api.repositories.UserRepository;
+import ru.gorbunov.social_media_api.models.Role;
+import ru.gorbunov.social_media_api.models.User;
+import ru.gorbunov.social_media_api.repositories.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -29,9 +29,19 @@ public class UserServiceImpl implements UserService {
     PostRepository postRepository;
     FriendsRepository friendsRepository;
     UserRepository userRepository;
-
     EventRepository eventRepository;
+
+    RolesRepository rolesRepository;
+
+    BCryptPasswordEncoder passwordEncoder;
     static String UP = "OLD";
+
+
+    @Override
+    public User register(User user) {
+        Role roleUser = rolesRepository.findByName("ROLE_USER");
+        return null;
+    }
 
     @Override
     public Post addNewPost(AddPostDto postAddDto, Long userId) {
