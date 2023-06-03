@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.gorbunov.social_media_api.models.User;
+import ru.gorbunov.social_media_api.security.jwt.JwtUser;
+import ru.gorbunov.social_media_api.security.jwt.JwtUserFactory;
 import ru.gorbunov.social_media_api.services.UserService;
 
 @Service
@@ -25,6 +27,8 @@ public class JwtUserDetailsService implements UserDetailsService {
         if(user == null) {
             throw new UsernameNotFoundException(String.format("User with name: %s was not found", username));
         }
-        return null;
+        JwtUser jwtUser = JwtUserFactory.create(user);
+        log.info("JwtUserDetailsService: loadUserByUsername user with username: {} loaded successfully", username);
+        return jwtUser;
     }
 }

@@ -1,7 +1,14 @@
 package ru.gorbunov.social_media_api.security.jwt;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import ru.gorbunov.social_media_api.enums.Status;
+import ru.gorbunov.social_media_api.models.Role;
 import ru.gorbunov.social_media_api.models.User;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public final class JwtUserFactory {
     public JwtUserFactory() {
@@ -15,7 +22,12 @@ public final class JwtUserFactory {
                 user.getEmail(),
                 user.getStatus().equals(Status.ACTIVE),
                 user.getUpdated(),
-                null
+                mapToGrantedAuthorities(new ArrayList<>(user.getRoles()))
         );
+    }
+   private static List<GrantedAuthority> mapToGrantedAuthorities(List<Role> userRoles) {
+        return userRoles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName().toString()))
+                .collect(Collectors.toList());
     }
 }
