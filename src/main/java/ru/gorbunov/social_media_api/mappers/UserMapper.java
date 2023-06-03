@@ -15,7 +15,8 @@ public class UserMapper {
                 null,
                 addUserDto.getUsername(),
                 addUserDto.getPassword(),
-                addUserDto.getEmail()
+                addUserDto.getEmail(),
+                null
         );
     }
 

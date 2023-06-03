@@ -5,6 +5,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.gorbunov.social_media_api.enums.RoleName;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -15,8 +17,12 @@ import ru.gorbunov.social_media_api.enums.RoleName;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    Long id;
     @Enumerated(EnumType.STRING)
     @Column(name = "role_name")
-    private RoleName name;
+    RoleName name;
+
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    List<User> users;
+
 }
