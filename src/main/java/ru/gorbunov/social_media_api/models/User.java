@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Fetch;
+import ru.gorbunov.social_media_api.enums.Status;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -26,6 +28,10 @@ public class User {
 
     @Column(name = "email")
     String email;
+
+    Date updated;
+
+    Status status;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",

@@ -190,6 +190,26 @@ databaseChangeLog:
             columns:
               name: role_name
               value: ROLE_ADMIN
+  - changeSet:
+      id: change_users
+      author: Mikhail
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: status
+                  type: varchar(20)
+                  constraints:
+                    nullable: false
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: updated
+                  type: timestamp
+                  constraints:
+                    nullable: false
 
 
 

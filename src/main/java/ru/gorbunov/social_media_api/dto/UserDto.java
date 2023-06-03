@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import ru.gorbunov.social_media_api.enums.Status;
 
 @Data
 @AllArgsConstructor
@@ -15,4 +16,6 @@ public class UserDto {
     Long id;
     String username;
     String email;
+    Status status;
+
 }

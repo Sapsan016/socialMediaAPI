@@ -13,4 +13,6 @@ public interface UserService {
 
     User register(AddUserDto addUserDto);
 
+    User findByUsername(String username);
+
 }
