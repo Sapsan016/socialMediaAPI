@@ -3,6 +3,11 @@ package ru.gorbunov.social_media_api.models;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.Fetch;
+import ru.gorbunov.social_media_api.enums.Status;
+
+import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,5 +29,14 @@ public class User {
     @Column(name = "email")
     String email;
 
+    Date updated;
+
+    Status status;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_roles",
+    joinColumns =  {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+    inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+    List<Role> roles;
 
 }

@@ -1,22 +1,18 @@
 package ru.gorbunov.social_media_api.services;
 
 import ru.gorbunov.social_media_api.dto.AddPostDto;
+import ru.gorbunov.social_media_api.dto.AddUserDto;
+import ru.gorbunov.social_media_api.enums.FriendshipStatus;
 import ru.gorbunov.social_media_api.models.Post;
+import ru.gorbunov.social_media_api.models.User;
 
 import java.util.Arrays;
 import java.util.List;
 
 public interface UserService {
-    Post addNewPost(AddPostDto postAddDto, Long userId);
 
+    User register(AddUserDto addUserDto);
 
-    Post findPostById(Long postId);
+    User findByUsername(String username);
 
-    List<Post> findUserPosts(String userId, Integer from, Integer size, String sort);
-
-    Post updatePost(Long postId, AddPostDto addPostDto);
-
-    void removePost(Long postId);
-
-    void addToFriends(Long userId, Long friendId);
 }

@@ -6,4 +6,5 @@ import ru.gorbunov.social_media_api.models.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
+    User findByUsername(String username);
 }
