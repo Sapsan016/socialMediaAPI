@@ -1,6 +1,7 @@
 package ru.gorbunov.social_media_api.services;
 
 import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,19 +19,14 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-    private final RolesRepository roleRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    UserRepository userRepository;
+    RolesRepository roleRepository;
+    BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository, RolesRepository roleRepository,
-                           BCryptPasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public User register(AddUserDto addUserDto) {

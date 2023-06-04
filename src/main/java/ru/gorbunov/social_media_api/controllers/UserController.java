@@ -1,6 +1,5 @@
 package ru.gorbunov.social_media_api.controllers;
 
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -15,6 +14,7 @@ import ru.gorbunov.social_media_api.mappers.PostMapper;
 import ru.gorbunov.social_media_api.services.PostService;
 import ru.gorbunov.social_media_api.services.UserService;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -1,6 +1,5 @@
 package ru.gorbunov.social_media_api.dto;
 
-import jakarta.persistence.Column;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
