@@ -30,7 +30,6 @@ import java.util.Objects;
 public class PostServiceImpl implements PostService{
 
     PostRepository postRepository;
-    FriendsRepository friendsRepository;
     UserRepository userRepository;
     EventRepository eventRepository;
     static String UP = "OLD";
@@ -84,28 +83,7 @@ public class PostServiceImpl implements PostService{
         log.info("Removed post with ID = {}", postId);
     }
 
-    @Override
-    public void addToFriends(Long userId, Long friendId) {
-        checkFriends(userId, friendId);
-        friendsRepository.addToFriends(userId, friendId);
-        eventRepository.save(new Event(null, LocalDateTime.now(), userId, EventType.FRIEND, Operation.ADD, friendId));
-        log.info("User with ID = {} added friend with ID = {}", userId, friendId);
-    }
 
-    @Override
-    public void confirmOrRejectFriendship(Long userId, Long friendId, FriendshipStatus friendshipStatus) {
-        checkFriends(userId, friendId);
-        friendsRepository.confirmOrRejectFriendship(userId,friendId, friendshipStatus);
-        if (friendshipStatus.equals(FriendshipStatus.CONFIRMED)) {
-            eventRepository.save(new Event(null, LocalDateTime.now(), userId, EventType.FRIEND,
-                    Operation.CONFIRM, friendId));
-        }
-        else {
-            eventRepository.save(new Event(null, LocalDateTime.now(), userId, EventType.FRIEND,
-                    Operation.REJECT, friendId));
-        }
-        log.info("User with ID = {} {} friendship with user ID = {}", userId, friendshipStatus, friendId);
-    }
 
 
 
@@ -118,13 +96,6 @@ public class PostServiceImpl implements PostService{
             postToUpdate.setImageRef(addPostDto.getImageRef());
     }
 
-    private void checkFriends(Long userId, Long friendId) {
-        if (Objects.equals(userId, friendId)) {
-            throw new ValidationException("You cannot add yourself!");
-        }
-        if (userRepository.findById(friendId).isEmpty()) {
-            throw new ObjectNotFoundException(String.format("User with ID = %s was not found", friendId));
-        }
-    }
+
 
 }

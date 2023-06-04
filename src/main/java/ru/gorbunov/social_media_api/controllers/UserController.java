@@ -11,6 +11,7 @@ import ru.gorbunov.social_media_api.dto.AddPostDto;
 import ru.gorbunov.social_media_api.dto.PostDto;
 import ru.gorbunov.social_media_api.enums.FriendshipStatus;
 import ru.gorbunov.social_media_api.mappers.PostMapper;
+import ru.gorbunov.social_media_api.services.FriendsService;
 import ru.gorbunov.social_media_api.services.PostService;
 
 import javax.validation.Valid;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 public class UserController {
     PostService postService;
 
+    FriendsService friendsService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/{userId}")
@@ -72,7 +74,7 @@ public class UserController {
     @PutMapping(value = "/{userId}/friend/{friendId}")
     public void addToFriends(@PathVariable Long userId, @PathVariable Long friendId) {
         log.info("UserController: Request to add friend with ID = {} from user with ID = {}", friendId, userId);
-        postService.addToFriends(userId, friendId);
+        friendsService.addToFriends(userId, friendId);
     }
 
     @PatchMapping(value = "/{userId}/friend/respond/{friendId}")
@@ -80,7 +82,7 @@ public class UserController {
                                   @RequestParam FriendshipStatus friendshipStatus) {
         log.info("UserController: User with ID = {} wants to {} his friendship with user ID = {}",
                 friendId, friendshipStatus, userId);
-        postService.confirmOrRejectFriendship(userId, friendId, friendshipStatus);
+        friendsService.confirmOrRejectFriendship(userId, friendId, friendshipStatus);
     }
 
 }
