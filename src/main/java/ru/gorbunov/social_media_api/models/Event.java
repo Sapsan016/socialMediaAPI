@@ -44,6 +44,7 @@ public class Event {
     Long userId;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "event_type")
     EventType eventType;
 
     @Enumerated(EnumType.STRING)

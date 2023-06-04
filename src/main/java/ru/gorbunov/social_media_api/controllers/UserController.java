@@ -12,14 +12,13 @@ import ru.gorbunov.social_media_api.dto.PostDto;
 import ru.gorbunov.social_media_api.enums.FriendshipStatus;
 import ru.gorbunov.social_media_api.mappers.PostMapper;
 import ru.gorbunov.social_media_api.services.PostService;
-import ru.gorbunov.social_media_api.services.UserService;
 
 import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor

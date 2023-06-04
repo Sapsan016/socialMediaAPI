@@ -210,6 +210,33 @@ databaseChangeLog:
                   type: timestamp
                   constraints:
                     nullable: false
+  - changeSet:
+      id: change_posts_column
+      author: Mikhail
+      changes:
+        - renameColumn:
+            tableName: posts
+            newColumnName: image_ref
+            oldColumnName: imageRef
+  - changeSet:
+      id: change_events_columns
+      author: Mikhail
+      changes:
+        - renameColumn:
+            tableName: events
+            newColumnName: event_type
+            oldColumnName: eventType
+        - addColumn:
+              tableName: events
+              columns:
+                - column:
+                    name: user_id
+                    type: bigint
+                    constraints:
+                      foreignKeyName: users
+                      nullable: false
+
+
 
 
 

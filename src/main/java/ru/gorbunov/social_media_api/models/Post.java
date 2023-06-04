@@ -27,6 +27,7 @@ public class Post {
 
     String header;
     String text;
+    @Column(name = "image_ref")
     String imageRef;
     LocalDateTime created;
 

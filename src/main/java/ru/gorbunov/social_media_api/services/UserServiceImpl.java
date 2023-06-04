@@ -4,7 +4,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.gorbunov.social_media_api.dto.AddUserDto;
@@ -60,18 +59,18 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
-////    @Override
-////    public User findById(Long id) {
-////        User result = userRepository.findById(id).orElse(null);
-////
-////        if (result == null) {
-////            log.warn("IN findById - no user found by id: {}", id);
-////            return null;
-////        }
-//
-//        log.info("IN findById - user: {} found by id: {}", result);
-//        return result;
-//    }
+    @Override
+    public User findById(Long id) {
+        User result = userRepository.findById(id).orElse(null);
+
+        if (result == null) {
+            log.warn("IN findById - no user found by id: {}", id);
+            return null;
+        }
+
+        log.info("IN findById - user: {} found by id: {}", result, id);
+        return result;
+    }
 
 //    @Override
 //    public void delete(Long id) {
