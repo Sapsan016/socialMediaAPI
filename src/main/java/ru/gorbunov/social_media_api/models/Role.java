@@ -1,15 +1,12 @@
 package ru.gorbunov.social_media_api.models;
 
-import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import javax.persistence.*;
 import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "roles")

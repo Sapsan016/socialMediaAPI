@@ -1,6 +1,5 @@
 package ru.gorbunov.social_media_api.controllers;
 
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -13,13 +12,13 @@ import ru.gorbunov.social_media_api.dto.PostDto;
 import ru.gorbunov.social_media_api.enums.FriendshipStatus;
 import ru.gorbunov.social_media_api.mappers.PostMapper;
 import ru.gorbunov.social_media_api.services.PostService;
-import ru.gorbunov.social_media_api.services.UserService;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1/users")
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -35,18 +34,18 @@ public class UserController {
         return PostMapper.toDto(postService.addNewPost(postAddDto, userId));
     }
 
-    @GetMapping("/{postId}")
+    @GetMapping("/post/{postId}")
     public PostDto getPostById(@PathVariable Long postId) {
-        log.info("UserController: Request to find a post wit ID = {}", postId);
+        log.info("UserController: Request to find a post with ID = {}", postId);
         return PostMapper.toDto(postService.findPostById(postId));
     }
 
 
-    @GetMapping("/{userId}")
+    @GetMapping("/posts/{userId}")
     public List<PostDto> getUserPosts(@RequestParam(defaultValue = "0") Integer from,
                                       @RequestParam(defaultValue = "10") Integer size,
                                       @RequestParam(defaultValue = "NEW") String sort,
-                                      @PathVariable String userId) {
+                                      @PathVariable Long userId) {
         log.info("UserController: Request to find posts, created by user with ID = {}, skip first: {}, " +
                 "list size: {}, sorted by creation: {}", userId, from, size, sort);
         return postService.findUserPosts(userId, from, size, sort)
@@ -55,7 +54,7 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
-    @PatchMapping("/{postId}")
+    @PatchMapping("/post/{postId}")
     public PostDto updatePost(@RequestBody AddPostDto addPostDto,
                               @PathVariable Long postId) {
         log.info("UserController: Request to update the post with ID = {}, new post's data: {}", postId,
@@ -63,7 +62,7 @@ public class UserController {
         return PostMapper.toDto(postService.updatePost(postId, addPostDto));
     }
 
-    @DeleteMapping("/{postId}")
+    @DeleteMapping("post/{postId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removePost(@PathVariable Long postId) {
         log.info("UserController: Request to remove post with ID = {}", postId);

@@ -1,19 +1,22 @@
 package ru.gorbunov.social_media_api.models;
 
-import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import ru.gorbunov.social_media_api.enums.Status;
 
-import java.io.File;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import javax.persistence.Column;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "posts")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +25,7 @@ public class Post {
 
     String header;
     String text;
+    @Column(name = "image_ref")
     String imageRef;
     LocalDateTime created;
 

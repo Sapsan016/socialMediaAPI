@@ -1,9 +1,9 @@
 package ru.gorbunov.social_media_api.services;
 
 import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.gorbunov.social_media_api.dto.AddUserDto;
@@ -18,19 +18,14 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-    private final RolesRepository roleRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    UserRepository userRepository;
+    RolesRepository roleRepository;
+    BCryptPasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository, RolesRepository roleRepository,
-                           BCryptPasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     @Override
     public User register(AddUserDto addUserDto) {
@@ -64,18 +59,18 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
-////    @Override
-////    public User findById(Long id) {
-////        User result = userRepository.findById(id).orElse(null);
-////
-////        if (result == null) {
-////            log.warn("IN findById - no user found by id: {}", id);
-////            return null;
-////        }
-//
-//        log.info("IN findById - user: {} found by id: {}", result);
-//        return result;
-//    }
+    @Override
+    public User findById(Long id) {
+        User result = userRepository.findById(id).orElse(null);
+
+        if (result == null) {
+            log.warn("IN findById - no user found by id: {}", id);
+            return null;
+        }
+
+        log.info("IN findById - user: {} found by id: {}", result, id);
+        return result;
+    }
 
 //    @Override
 //    public void delete(Long id) {
