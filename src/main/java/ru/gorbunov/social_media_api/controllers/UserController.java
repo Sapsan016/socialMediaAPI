@@ -69,13 +69,13 @@ public class UserController {
         postService.removePost(postId);
     }
 
-    @PutMapping(value = "/{userId}/friends/{friendId}")
+    @PutMapping(value = "/{userId}/friend/{friendId}")
     public void addToFriends(@PathVariable Long userId, @PathVariable Long friendId) {
         log.info("UserController: Request to add friend with ID = {} from user with ID = {}", friendId, userId);
         postService.addToFriends(userId, friendId);
     }
 
-    @PatchMapping(value = "/{userId}/friends/{friendId}/")
+    @PatchMapping(value = "/{userId}/friend/respond/{friendId}")
     public void confirmFriendship(@PathVariable Long userId, @PathVariable Long friendId,
                                   @RequestParam FriendshipStatus friendshipStatus) {
         log.info("UserController: User with ID = {} wants to {} his friendship with user ID = {}",
