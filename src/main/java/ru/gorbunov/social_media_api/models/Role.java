@@ -3,7 +3,6 @@ package ru.gorbunov.social_media_api.models;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import ru.gorbunov.social_media_api.enums.RoleName;
 
 import java.util.List;
 
@@ -17,12 +16,13 @@ import java.util.List;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "role_id")
     Long id;
-    @Enumerated(EnumType.STRING)
     @Column(name = "role_name")
-    RoleName name;
+    private String name;
 
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    List<User> users;
+    private List<User> users;
+
 
 }
