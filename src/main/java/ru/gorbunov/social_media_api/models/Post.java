@@ -17,7 +17,9 @@ import java.time.LocalDateTime;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "post_id")
     Long id;
+
     String header;
     String text;
     String imageRef;

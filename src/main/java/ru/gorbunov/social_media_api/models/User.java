@@ -19,6 +19,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     Long id;
     @Column(name = "username")
     String username;
@@ -31,12 +32,13 @@ public class User {
 
     Date updated;
 
+    @Enumerated(EnumType.STRING)
     Status status;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
-    joinColumns =  {@JoinColumn(name = "user_id", referencedColumnName = "id")},
-    inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+    joinColumns =  {@JoinColumn(name = "user_id", referencedColumnName = "user_id")},
+    inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "role_id")})
     List<Role> roles;
 
 }

@@ -23,17 +23,17 @@ import java.util.Date;
 import java.util.List;
 
 @Component
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class JwtTokenProvider {
 
     @Value("${jwt.token.secret}")
-    String secret;
+    private String secret;
 
     @Value("${jwt.token.expired}")
-    long validityInMillis;
+    private long validityInMilliseconds;
+
 
     @Autowired
-    UserDetailsService userDetailsService;
+    private UserDetailsService userDetailsService;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -43,23 +43,23 @@ public class JwtTokenProvider {
 
     @PostConstruct
     protected void init() {
-        secret= Base64.getEncoder().encodeToString(secret.getBytes());
+        secret = Base64.getEncoder().encodeToString(secret.getBytes());
     }
 
-
     public String createToken(String username, List<Role> roles) {
+
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("roles", getRoleNames(roles));
+
         Date now = new Date();
-        Date validity = new Date(now.getTime() + validityInMillis);
+        Date validity = new Date(now.getTime() + validityInMilliseconds);
 
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(validity)
-                .signWith(SignatureAlgorithm.ES256, secret)
+        return Jwts.builder()//
+                .setClaims(claims)//
+                .setIssuedAt(now)//
+                .setExpiration(validity)//
+                .signWith(SignatureAlgorithm.HS256, secret)//
                 .compact();
-
     }
 
     public Authentication getAuthentication(String token) {
@@ -71,10 +71,10 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
+    public String resolveToken(HttpServletRequest req) {
+        String bearerToken = req.getHeader("Authorization");
+        if (bearerToken != null && bearerToken.startsWith("Bearer_")) {
+            return bearerToken.substring(7, bearerToken.length());
         }
         return null;
     }
@@ -82,9 +82,11 @@ public class JwtTokenProvider {
     public boolean validateToken(String token) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+
             if (claims.getBody().getExpiration().before(new Date())) {
                 return false;
             }
+
             return true;
         } catch (JwtException | IllegalArgumentException e) {
             throw new JwtAuthenticationException("JWT token is expired or invalid");
@@ -93,7 +95,11 @@ public class JwtTokenProvider {
 
     private List<String> getRoleNames(List<Role> userRoles) {
         List<String> result = new ArrayList<>();
-        userRoles.forEach(role -> result.add(role.getName().toString()));
+
+        userRoles.forEach(role -> {
+            result.add(role.getName().toString());
+        });
+
         return result;
     }
 }
