@@ -11,7 +11,7 @@ public interface PostService {
 
     Post findPostById(Long postId);
 
-    List<Post> findUserPosts(String userId, Integer from, Integer size, String sort);
+    List<Post> findUserPosts(Long userId, Integer from, Integer size, String sort);
 
     Post updatePost(Long postId, AddPostDto addPostDto);
 

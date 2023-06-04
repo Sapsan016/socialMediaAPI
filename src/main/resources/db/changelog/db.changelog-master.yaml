@@ -235,6 +235,18 @@ databaseChangeLog:
                     constraints:
                       foreignKeyName: users
                       nullable: false
+#  - changeSet:
+#        id: reset_post_events
+#        author: Mikhail
+#        changes:
+#          - delete:
+#              tableName: posts
+#          - restart:
+#              tableName: posts
+#              column:
+
+
+
 
 
 

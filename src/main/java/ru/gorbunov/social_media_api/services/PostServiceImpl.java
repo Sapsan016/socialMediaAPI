@@ -53,7 +53,7 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public List<Post> findUserPosts(String userId, Integer from, Integer size, String sort) {
+    public List<Post> findUserPosts(Long userId, Integer from, Integer size, String sort) {
         if (sort.equals(UP)) {
             log.info("Getting posts list, created by user with ID = {}, sort by creation: {}, skip: {}, size: {}",
                     userId, sort, from, size);

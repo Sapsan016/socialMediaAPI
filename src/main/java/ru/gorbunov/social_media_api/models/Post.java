@@ -9,9 +9,7 @@ import ru.gorbunov.social_media_api.enums.Status;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 import javax.persistence.Column;
-import java.util.Date;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
