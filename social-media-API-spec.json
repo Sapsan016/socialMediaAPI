@@ -11,34 +11,158 @@
     }
   ],
   "tags": [
-
+    {
+      "description": "API для регистрации нового пользователя",
+      "name": "Registration: Регистрация"
+    },
+    {
+      "description": "API для атентификации и авторизации пользователя",
+      "name": "Login: Аутентификация"
+    },
     {
       "description": "Закрытый API для работы с постами",
-      "name": "Private: Посты"
-    },
-    {
-      "description": "Публичный API для регистрации нового пользователя",
-      "name": "Public: Категории"
-    },
-    {
-      "description": "API для работы с событиями",
-      "name": "Admin: События"
-    },
-    {
-      "description": "Публичный API для работы с событиями",
-      "name": "Public: События"
+      "name": "Users: Посты"
     },
     {
       "description": "Закрытый API для взаимодействия между пользователями",
-      "name": "Private: Дружба"
+      "name": "Users: Дружба"
     },
     {
-      "description": "API для работы с пользователями",
+      "description": "API администратора для работы с пользователями",
       "name": "Admin: Пользователи"
     }
-
-     ],
+  ],
   "paths": {
+    "/api/v2/api/v2/user/registration": {
+      "post": {
+        "description": "Регистрация нового пользователя",
+        "operationId": "registerUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddUserDto"
+              }
+            }
+          },
+          "description": "Данные добавляемого пользователя",
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            },
+            "description": "Пользователь зарегистрирован"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "BAD_REQUEST",
+                  "reason": "Incorrectly made request.",
+                  "message": "Field: name. Error: must not be blank. Value: null",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос составлен некорректно"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "CONFLICT",
+                  "reason": "Integrity constraint has been violated.",
+                  "message": "could not execute statement; SQL [n/a]; constraint [uq_email]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Нарушение целостности данных"
+          }
+        },
+        "summary": "Добавление нового пользователя",
+        "tags": [
+          "Registration: Регистрация"
+        ]
+      }
+    },
+    "/api/v2/auth/login": {
+      "post": {
+        "description": "Вход в систему пользователя. Предоставляется имя пользователя и пароль.В случае совпадения данных возвращается токен для дальнейшего использования закрытой части API",
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticationRequestDto"
+              }
+            }
+          },
+          "description": "Аутентификация пользователя",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationResponse"
+                }
+              }
+            },
+            "description": "Пользователь успешно вошел в систему"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "BAD_REQUEST",
+                  "reason": "Incorrectly made request.",
+                  "message": "Field: name. Error: must not be blank. Value: null",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Запрос составлен некорректно"
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "CONFLICT",
+                  "reason": "Integrity constraint has been violated.",
+                  "message": "could not execute statement; SQL [n/a]; constraint [uq_email]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement",
+                  "timestamp": "2022-09-07 09:10:50"
+                },
+                "schema": {
+                  "$ref": "#/components/schemas/ApiError"
+                }
+              }
+            },
+            "description": "Нарушение целостности данных"
+          }
+        },
+        "summary": "Аутентификация и авторизация пользователя",
+        "tags": [
+          "Login: Аутентификация"
+        ]
+      }
+    },
     "/api/v2/admin/users/{userId}": {
       "get": {
         "description": "Возвращает информацию о пользователе\n\nВ случае, если не найдено ни одного пользователя, возвращает код 404",
@@ -181,68 +305,6 @@
         "tags": [
           "Admin: Пользователи"
         ]
-      },
-      "post": {
-        "operationId": "registerUser",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewUserRequest"
-              }
-            }
-          },
-          "description": "Данные добавляемого пользователя",
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserDto"
-                }
-              }
-            },
-            "description": "Пользователь зарегистрирован"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "example": {
-                  "status": "BAD_REQUEST",
-                  "reason": "Incorrectly made request.",
-                  "message": "Field: name. Error: must not be blank. Value: null",
-                  "timestamp": "2022-09-07 09:10:50"
-                },
-                "schema": {
-                  "$ref": "#/components/schemas/ApiError"
-                }
-              }
-            },
-            "description": "Запрос составлен некорректно"
-          },
-          "409": {
-            "content": {
-              "application/json": {
-                "example": {
-                  "status": "CONFLICT",
-                  "reason": "Integrity constraint has been violated.",
-                  "message": "could not execute statement; SQL [n/a]; constraint [uq_email]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement",
-                  "timestamp": "2022-09-07 09:10:50"
-                },
-                "schema": {
-                  "$ref": "#/components/schemas/ApiError"
-                }
-              }
-            },
-            "description": "Нарушение целостности данных"
-          }
-        },
-        "summary": "Добавление нового пользователя",
-        "tags": [
-          "Admin: Пользователи"
-        ]
       }
     },
     "/admin/users/{userId}": {
@@ -349,212 +411,6 @@
         "summary": "Получение категорий",
         "tags": [
           "Public: Категории"
-        ]
-      }
-    },
-    "/categories/{catId}": {
-      "get": {
-        "description": "В случае, если категории с заданным id не найдено, возвращает статус код 404",
-        "operationId": "getCategory",
-        "parameters": [
-          {
-            "description": "id категории",
-            "in": "path",
-            "name": "catId",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CategoryDto"
-                }
-              }
-            },
-            "description": "Категория найдена"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "example": {
-                  "status": "BAD_REQUEST",
-                  "reason": "Incorrectly made request.",
-                  "message": "Failed to convert value of type java.lang.String to required type long; nested exception is java.lang.NumberFormatException: For input string: ad",
-                  "timestamp": "2022-09-07 09:10:50"
-                },
-                "schema": {
-                  "$ref": "#/components/schemas/ApiError"
-                }
-              }
-            },
-            "description": "Запрос составлен некорректно"
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "example": {
-                  "status": "NOT_FOUND",
-                  "reason": "The required object was not found.",
-                  "message": "Category with id=19 was not found",
-                  "timestamp": "2022-09-07 09:10:50"
-                },
-                "schema": {
-                  "$ref": "#/components/schemas/ApiError"
-                }
-              }
-            },
-            "description": "Категория не найдена или недоступна"
-          }
-        },
-        "summary": "Получение информации о категории по её идентификатору",
-        "tags": [
-          "Public: Категории"
-        ]
-      }
-    },
-    "/compilations": {
-      "get": {
-        "description": "В случае, если по заданным фильтрам не найдено ни одной подборки, возвращает пустой список",
-        "operationId": "getCompilations",
-        "parameters": [
-          {
-            "description": "искать только закрепленные/не закрепленные подборки",
-            "in": "query",
-            "name": "pinned",
-            "required": false,
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "description": "количество элементов, которые нужно пропустить для формирования текущего набора",
-            "in": "query",
-            "name": "from",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 0
-            }
-          },
-          {
-            "description": "количество элементов в наборе",
-            "in": "query",
-            "name": "size",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32",
-              "default": 10
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CompilationDto"
-                  }
-                }
-              }
-            },
-            "description": "Найдены подборки событий"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "example": {
-                  "status": "BAD_REQUEST",
-                  "reason": "Incorrectly made request.",
-                  "message": "Failed to convert value of type java.lang.String to required type int; nested exception is java.lang.NumberFormatException: For input string: ad",
-                  "timestamp": "2022-09-07 09:10:50"
-                },
-                "schema": {
-                  "$ref": "#/components/schemas/ApiError"
-                }
-              }
-            },
-            "description": "Запрос составлен некорректно"
-          }
-        },
-        "summary": "Получение подборок событий",
-        "tags": [
-          "Public: Подборки событий"
-        ]
-      }
-    },
-    "/compilations/{compId}": {
-      "get": {
-        "description": "В случае, если подборки с заданным id не найдено, возвращает статус код 404",
-        "operationId": "getCompilation",
-        "parameters": [
-          {
-            "description": "id подборки",
-            "in": "path",
-            "name": "compId",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CompilationDto"
-                }
-              }
-            },
-            "description": "Подборка событий найдена"
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "example": {
-                  "status": "BAD_REQUEST",
-                  "reason": "Incorrectly made request.",
-                  "message": "Failed to convert value of type java.lang.String to required type long; nested exception is java.lang.NumberFormatException: For input string: ad",
-                  "timestamp": "2022-09-07 09:10:50"
-                },
-                "schema": {
-                  "$ref": "#/components/schemas/ApiError"
-                }
-              }
-            },
-            "description": "Запрос составлен некорректно"
-          },
-          "404": {
-            "content": {
-              "application/json": {
-                "example": {
-                  "status": "NOT_FOUND",
-                  "reason": "The required object was not found.",
-                  "message": "Compilation with id=84 was not found",
-                  "timestamp": "2022-09-07 09:10:50"
-                },
-                "schema": {
-                  "$ref": "#/components/schemas/ApiError"
-                }
-              }
-            },
-            "description": "Подборка не найдена или недоступна"
-          }
-        },
-        "summary": "Получение подборки событий по его id",
-        "tags": [
-          "Public: Подборки событий"
         ]
       }
     },
@@ -2046,22 +1902,28 @@
         },
         "description": "Новое событие"
       },
-      "NewUserRequest": {
+      "AddUserDto": {
         "required": [
-          "email",
-          "name"
+          "username",
+          "password",
+          "email"
         ],
         "type": "object",
         "properties": {
+          "username": {
+            "type": "string",
+            "description": "Имя пользователя",
+            "example": "tester"
+          },
+          "password": {
+            "type": "string",
+            "description": "Пароль пользователя",
+            "example": "test"
+          },
           "email": {
             "type": "string",
             "description": "Почтовый адрес",
-            "example": "ivan.petrov@practicummail.ru"
-          },
-          "name": {
-            "type": "string",
-            "description": "Имя",
-            "example": "Иван Петров"
+            "example": "ivan.petrov@gmail.com"
           }
         },
         "description": "Данные нового пользователя"
@@ -2274,12 +2136,12 @@
           "username": {
             "type": "string",
             "description": "Username",
-            "example": "ПетровИван"
+            "example": "tester"
           },
           "email": {
             "type": "string",
             "description": "Почтовый адрес",
-            "example": "petrov.i@practicummail.ru"
+            "example": "petrov.i@gmail.com"
           },
           "status": {
             "type": "string",
@@ -2287,6 +2149,24 @@
             "example": "ACTIVE"
           }
         },
+        "description": "Пользователь"
+      },
+      "AuthenticationRequestDto": {
+      "required": [
+        "username",
+        "password"
+      ],
+      "type": "object",
+
+      "description": "Пользователь"
+    },
+      "AuthenticationResponse": {
+        "required": [
+          "username",
+          "password"
+        ],
+        "type": "object",
+
         "description": "Пользователь"
       }
     }
