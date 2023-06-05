@@ -21,6 +21,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String REGISTRATION_ENDPOINT = "/api/v1/user/registration";
 
+    private static final String[] AUTH_WHITELIST = {
+            // -- Swagger UI v2
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            // -- Swagger UI v3 (OpenAPI)
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+            // other public endpoints of your API may be appended to this array
+    };
+
 
     @Autowired
     public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
@@ -40,12 +55,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                .authorizeRequests().antMatchers("/v3/api-docs", "/swagger-resources/**", "/swagger-ui/**").permitAll()
+                .and()
                 .authorizeRequests()
                 .antMatchers(REGISTRATION_ENDPOINT).permitAll()
                 .antMatchers(LOGIN_ENDPOINT).permitAll()
                 .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .anyRequest().authenticated()
                 .and()
+
                 .apply(new JwtConfigurer(jwtTokenProvider));
     }
 }
