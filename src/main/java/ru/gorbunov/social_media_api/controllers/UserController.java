@@ -56,19 +56,19 @@ public class UserController {
                 .collect(Collectors.toList());
     }
 
-    @PatchMapping("/post/{postId}")
+    @PatchMapping("/{userId}/post/{postId}")
     public PostDto updatePost(@RequestBody AddPostDto addPostDto,
-                              @PathVariable Long postId) {
+                              @PathVariable Long postId, @PathVariable Long userId) {
         log.info("UserController: Request to update the post with ID = {}, new post's data: {}", postId,
                 addPostDto.toString());
-        return PostMapper.toDto(postService.updatePost(postId, addPostDto));
+        return PostMapper.toDto(postService.updatePost(postId, addPostDto, userId));
     }
 
-    @DeleteMapping("post/{postId}")
+    @DeleteMapping("/{userId}/post/{postId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void removePost(@PathVariable Long postId) {
+    public void removePost(@PathVariable Long postId, @PathVariable Long userId) {
         log.info("UserController: Request to remove post with ID = {}", postId);
-        postService.removePost(postId);
+        postService.removePost(postId, userId);
     }
 
     @PostMapping(value = "/{userId}/friend/{friendId}")

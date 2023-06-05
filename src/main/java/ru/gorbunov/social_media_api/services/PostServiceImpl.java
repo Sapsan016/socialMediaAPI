@@ -60,8 +60,11 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public Post updatePost(Long postId, AddPostDto addPostDto) {
+    public Post updatePost(Long postId, AddPostDto addPostDto, Long userId) {
         Post postToUpdate = findPostById(postId);
+        if (checkPostUser(postToUpdate, userId)) {
+            throw new IllegalArgumentException(String.format("User with ID = %d was not author of the post", userId));
+        }
         checkUpdate(postToUpdate, addPostDto);
         postRepository.save(postToUpdate);
         eventRepository.save(new Event(null, LocalDateTime.now(), postToUpdate.getUser().getId(),
@@ -71,8 +74,11 @@ public class PostServiceImpl implements PostService{
     }
 
     @Override
-    public void removePost(Long postId) {
+    public void removePost(Long postId, Long userId) {
         Post postToRemove = findPostById(postId);
+        if (checkPostUser(postToRemove, userId)) {
+            throw new IllegalArgumentException(String.format("User with ID = %d was not author of the post", userId));
+        }
         postRepository.delete(postToRemove);
         eventRepository.save(new Event(null, LocalDateTime.now(), postToRemove.getUser().getId(),
                 EventType.POST, Operation.REMOVE, postId));
@@ -87,4 +93,8 @@ public class PostServiceImpl implements PostService{
         if (addPostDto.getImageRef() != null)
             postToUpdate.setImageRef(addPostDto.getImageRef());
     }
+    private boolean checkPostUser(Post post, Long userId) {
+        return !post.getUser().getId().equals(userId);
+    }
+
 }

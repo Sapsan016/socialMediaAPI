@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.gorbunov.social_media_api.dto.AddUserDto;
 import ru.gorbunov.social_media_api.enums.Status;
+import ru.gorbunov.social_media_api.exception.ObjectNotFoundException;
 import ru.gorbunov.social_media_api.mappers.UserMapper;
 import ru.gorbunov.social_media_api.models.Role;
 import ru.gorbunov.social_media_api.models.User;
@@ -25,7 +26,6 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
     RolesRepository roleRepository;
     BCryptPasswordEncoder passwordEncoder;
-
 
     @Override
     public User register(AddUserDto addUserDto) {
@@ -54,22 +54,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByUsername(String username) {
-        User result = userRepository.findByUsername(username);
-        log.info("IN findByUsername - user: {} found by username: {}", result, username);
-        return result;
+        return userRepository.findByUsername(username).orElseThrow(() ->
+                new ObjectNotFoundException(String.format("User with ID = %s was not found", username)));
     }
 
     @Override
-    public User findById(Long id) {
-        User result = userRepository.findById(id).orElse(null);
-
-        if (result == null) {
-            log.warn("IN findById - no user found by id: {}", id);
-            return null;
-        }
-
-        log.info("IN findById - user: {} found by id: {}", result, id);
-        return result;
+    public User findById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() ->
+                new ObjectNotFoundException(String.format("User with ID = %s was not found", userId)));
     }
 
 //    @Override
