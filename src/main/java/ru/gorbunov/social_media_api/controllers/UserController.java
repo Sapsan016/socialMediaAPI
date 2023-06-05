@@ -11,6 +11,7 @@ import ru.gorbunov.social_media_api.dto.AddPostDto;
 import ru.gorbunov.social_media_api.dto.PostDto;
 import ru.gorbunov.social_media_api.enums.FriendshipStatus;
 import ru.gorbunov.social_media_api.mappers.PostMapper;
+import ru.gorbunov.social_media_api.services.FriendsService;
 import ru.gorbunov.social_media_api.services.PostService;
 
 import javax.validation.Valid;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v2/users")
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 public class UserController {
     PostService postService;
 
+    FriendsService friendsService;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/{userId}")
@@ -69,18 +71,29 @@ public class UserController {
         postService.removePost(postId);
     }
 
-    @PutMapping(value = "/{userId}/friends/{friendId}")
+    @PostMapping(value = "/{userId}/friend/{friendId}")
     public void addToFriends(@PathVariable Long userId, @PathVariable Long friendId) {
         log.info("UserController: Request to add friend with ID = {} from user with ID = {}", friendId, userId);
-        postService.addToFriends(userId, friendId);
+        friendsService.addToFriends(userId, friendId);
     }
 
-    @PatchMapping(value = "/{userId}/friends/{friendId}/")
+    @PatchMapping(value = "/{userId}/friend/respond/{friendId}/{response}")
     public void confirmFriendship(@PathVariable Long userId, @PathVariable Long friendId,
-                                  @RequestParam FriendshipStatus friendshipStatus) {
-        log.info("UserController: User with ID = {} wants to {} his friendship with user ID = {}",
-                friendId, friendshipStatus, userId);
-        postService.confirmOrRejectFriendship(userId, friendId, friendshipStatus);
+                                  @PathVariable String response) {
+        if (response.equals("YES")) {
+            FriendshipStatus friendshipStatus = FriendshipStatus.CONFIRMED;
+            log.info("UserController: User with ID = {} wants to {} his friendship with user ID = {}",
+                    friendId, friendshipStatus, userId);
+            friendsService.confirmFriendship(userId, friendId, friendshipStatus);
+        }
+       else if (response.equals("NO")) {
+            FriendshipStatus friendshipStatus = FriendshipStatus.REJECTED;
+            log.info("UserController: User with ID = {} wants to {} his friendship with user ID = {}",
+                    friendId, friendshipStatus, userId);
+            friendsService.rejectFriendship(userId, friendId, friendshipStatus);
+        }
+       else {
+           throw new IllegalArgumentException("Invalid response parameter");
+        }
     }
-
 }

@@ -13,13 +13,13 @@ public class FriendsRepositoryImpl implements FriendsRepository {
     @Override
     public void addToFriends(Long userId, Long friendId) {
         String sqlQuery = "insert into user_friends(user_id, friend_id, friendship) values (?, ?, ?)";
-        jdbcTemplate.update(sqlQuery, userId, friendId, FriendshipStatus.PENDING);
+        jdbcTemplate.update(sqlQuery, userId, friendId, FriendshipStatus.PENDING.toString());
     }
 
     @Override
     public void confirmOrRejectFriendship(Long userId, Long friendId, FriendshipStatus friendshipStatus) {
-        String sqlQuery = "UPDATE user_friends SET friendship = ? where USER_ID = ? and FRIEND_ID = ? ";
-        jdbcTemplate.update(sqlQuery, friendshipStatus, userId, friendId);
+        String sqlQuery = "UPDATE user_friends SET friendship = ? where USER_ID = ? and FRIEND_ID = ?";
+        jdbcTemplate.update(sqlQuery, friendshipStatus.toString(), userId, friendId);
 
     }
 }

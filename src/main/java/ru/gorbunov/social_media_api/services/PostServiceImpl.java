@@ -7,21 +7,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.gorbunov.social_media_api.dto.AddPostDto;
 import ru.gorbunov.social_media_api.enums.EventType;
-import ru.gorbunov.social_media_api.enums.FriendshipStatus;
 import ru.gorbunov.social_media_api.enums.Operation;
 import ru.gorbunov.social_media_api.exception.ObjectNotFoundException;
-import ru.gorbunov.social_media_api.exception.ValidationException;
 import ru.gorbunov.social_media_api.mappers.PostMapper;
 import ru.gorbunov.social_media_api.models.Event;
 import ru.gorbunov.social_media_api.models.Post;
 import ru.gorbunov.social_media_api.repositories.EventRepository;
-import ru.gorbunov.social_media_api.repositories.FriendsRepository;
 import ru.gorbunov.social_media_api.repositories.PostRepository;
 import ru.gorbunov.social_media_api.repositories.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +26,6 @@ import java.util.Objects;
 public class PostServiceImpl implements PostService{
 
     PostRepository postRepository;
-    FriendsRepository friendsRepository;
     UserRepository userRepository;
     EventRepository eventRepository;
     static String UP = "OLD";
@@ -84,31 +79,6 @@ public class PostServiceImpl implements PostService{
         log.info("Removed post with ID = {}", postId);
     }
 
-    @Override
-    public void addToFriends(Long userId, Long friendId) {
-        checkFriends(userId, friendId);
-        friendsRepository.addToFriends(userId, friendId);
-        eventRepository.save(new Event(null, LocalDateTime.now(), userId, EventType.FRIEND, Operation.ADD, friendId));
-        log.info("User with ID = {} added friend with ID = {}", userId, friendId);
-    }
-
-    @Override
-    public void confirmOrRejectFriendship(Long userId, Long friendId, FriendshipStatus friendshipStatus) {
-        checkFriends(userId, friendId);
-        friendsRepository.confirmOrRejectFriendship(userId,friendId, friendshipStatus);
-        if (friendshipStatus.equals(FriendshipStatus.CONFIRMED)) {
-            eventRepository.save(new Event(null, LocalDateTime.now(), userId, EventType.FRIEND,
-                    Operation.CONFIRM, friendId));
-        }
-        else {
-            eventRepository.save(new Event(null, LocalDateTime.now(), userId, EventType.FRIEND,
-                    Operation.REJECT, friendId));
-        }
-        log.info("User with ID = {} {} friendship with user ID = {}", userId, friendshipStatus, friendId);
-    }
-
-
-
     private void checkUpdate(Post postToUpdate, AddPostDto addPostDto) {
         if (addPostDto.getHeader() != null)
             postToUpdate.setHeader(addPostDto.getHeader());
@@ -117,14 +87,4 @@ public class PostServiceImpl implements PostService{
         if (addPostDto.getImageRef() != null)
             postToUpdate.setImageRef(addPostDto.getImageRef());
     }
-
-    private void checkFriends(Long userId, Long friendId) {
-        if (Objects.equals(userId, friendId)) {
-            throw new ValidationException("You cannot add yourself!");
-        }
-        if (userRepository.findById(friendId).isEmpty()) {
-            throw new ObjectNotFoundException(String.format("User with ID = %s was not found", friendId));
-        }
-    }
-
 }

@@ -1,6 +1,7 @@
 package ru.gorbunov.social_media_api.controllers;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,13 +15,11 @@ import ru.gorbunov.social_media_api.services.UserService;
 
 
 @RestController
-@RequestMapping(value = "/api/v1/admin/")
+@RequestMapping(value = "/api/v2/admin/")
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdminController {
-
-    private final UserService userService;
-
-
+    UserService userService;
 
     @GetMapping(value = "users/{id}")
     public ResponseEntity<UserDto> getUserById(@PathVariable(name = "id") Long id) {
@@ -29,7 +28,6 @@ public class AdminController {
         if (user == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-
         UserDto result = UserMapper.toDto(user);
 
         return new ResponseEntity<>(result, HttpStatus.OK);

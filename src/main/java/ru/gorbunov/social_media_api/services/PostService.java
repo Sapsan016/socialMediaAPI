@@ -17,7 +17,5 @@ public interface PostService {
 
     void removePost(Long postId);
 
-    void addToFriends(Long userId, Long friendId);
 
-    void confirmOrRejectFriendship(Long userId, Long friendId, FriendshipStatus friendshipStatus);
 }

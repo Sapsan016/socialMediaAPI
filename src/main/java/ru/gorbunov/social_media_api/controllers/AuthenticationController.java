@@ -23,7 +23,7 @@ import java.util.Map;
 
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@RequestMapping(value = "/api/v1/auth")
+@RequestMapping(value = "/api/v2/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
     AuthenticationManager authenticationManager;
@@ -41,7 +41,7 @@ public class AuthenticationController {
                 throw new UsernameNotFoundException(String.format("User with username: %s was not found", username));
             }
             String token = jwtTokenProvider.createToken(username, user.getRoles());
-            Map<Object, Object> response = new HashMap<>();
+            Map<String, String> response = new HashMap<>();
             response.put("username", username);
             response.put("token", token);
             return ResponseEntity.ok(response);
@@ -50,6 +50,5 @@ public class AuthenticationController {
         }
 
     }
-
 
 }
