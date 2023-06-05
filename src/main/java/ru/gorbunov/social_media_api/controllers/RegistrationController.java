@@ -18,7 +18,7 @@ import ru.gorbunov.social_media_api.services.UserService;
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@RequestMapping(value = "/api/v1/user")
+@RequestMapping(value = "/api/v2/user")
 @Slf4j
 public class RegistrationController {
 

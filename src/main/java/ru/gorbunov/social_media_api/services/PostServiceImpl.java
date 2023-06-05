@@ -7,21 +7,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.gorbunov.social_media_api.dto.AddPostDto;
 import ru.gorbunov.social_media_api.enums.EventType;
-import ru.gorbunov.social_media_api.enums.FriendshipStatus;
 import ru.gorbunov.social_media_api.enums.Operation;
 import ru.gorbunov.social_media_api.exception.ObjectNotFoundException;
-import ru.gorbunov.social_media_api.exception.ValidationException;
 import ru.gorbunov.social_media_api.mappers.PostMapper;
 import ru.gorbunov.social_media_api.models.Event;
 import ru.gorbunov.social_media_api.models.Post;
 import ru.gorbunov.social_media_api.repositories.EventRepository;
-import ru.gorbunov.social_media_api.repositories.FriendsRepository;
 import ru.gorbunov.social_media_api.repositories.PostRepository;
 import ru.gorbunov.social_media_api.repositories.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -83,10 +79,6 @@ public class PostServiceImpl implements PostService{
         log.info("Removed post with ID = {}", postId);
     }
 
-
-
-
-
     private void checkUpdate(Post postToUpdate, AddPostDto addPostDto) {
         if (addPostDto.getHeader() != null)
             postToUpdate.setHeader(addPostDto.getHeader());
@@ -95,7 +87,4 @@ public class PostServiceImpl implements PostService{
         if (addPostDto.getImageRef() != null)
             postToUpdate.setImageRef(addPostDto.getImageRef());
     }
-
-
-
 }

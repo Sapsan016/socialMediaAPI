@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v2/users")
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -71,18 +71,29 @@ public class UserController {
         postService.removePost(postId);
     }
 
-    @PutMapping(value = "/{userId}/friend/{friendId}")
+    @PostMapping(value = "/{userId}/friend/{friendId}")
     public void addToFriends(@PathVariable Long userId, @PathVariable Long friendId) {
         log.info("UserController: Request to add friend with ID = {} from user with ID = {}", friendId, userId);
         friendsService.addToFriends(userId, friendId);
     }
 
-    @PatchMapping(value = "/{userId}/friend/respond/{friendId}")
+    @PatchMapping(value = "/{userId}/friend/respond/{friendId}/{response}")
     public void confirmFriendship(@PathVariable Long userId, @PathVariable Long friendId,
-                                  @RequestParam FriendshipStatus friendshipStatus) {
-        log.info("UserController: User with ID = {} wants to {} his friendship with user ID = {}",
-                friendId, friendshipStatus, userId);
-        friendsService.confirmOrRejectFriendship(userId, friendId, friendshipStatus);
+                                  @PathVariable String response) {
+        if (response.equals("YES")) {
+            FriendshipStatus friendshipStatus = FriendshipStatus.CONFIRMED;
+            log.info("UserController: User with ID = {} wants to {} his friendship with user ID = {}",
+                    friendId, friendshipStatus, userId);
+            friendsService.confirmFriendship(userId, friendId, friendshipStatus);
+        }
+       else if (response.equals("NO")) {
+            FriendshipStatus friendshipStatus = FriendshipStatus.REJECTED;
+            log.info("UserController: User with ID = {} wants to {} his friendship with user ID = {}",
+                    friendId, friendshipStatus, userId);
+            friendsService.rejectFriendship(userId, friendId, friendshipStatus);
+        }
+       else {
+           throw new IllegalArgumentException("Invalid response parameter");
+        }
     }
-
 }

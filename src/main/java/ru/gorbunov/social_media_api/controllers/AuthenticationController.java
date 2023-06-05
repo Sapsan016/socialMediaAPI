@@ -23,7 +23,7 @@ import java.util.Map;
 
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@RequestMapping(value = "/api/v1/auth")
+@RequestMapping(value = "/api/v2/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
     AuthenticationManager authenticationManager;

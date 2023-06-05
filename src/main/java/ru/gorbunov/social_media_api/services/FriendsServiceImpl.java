@@ -25,7 +25,6 @@ import java.util.Objects;
 public class FriendsServiceImpl implements FriendsService {
 
     FriendsRepository friendsRepository;
-
     UserRepository userRepository;
     EventRepository eventRepository;
 
@@ -37,20 +36,22 @@ public class FriendsServiceImpl implements FriendsService {
         log.info("User with ID = {} added friend with ID = {}", userId, friendId);
     }
 
+
     @Override
-    public void confirmOrRejectFriendship(Long userId, Long friendId, FriendshipStatus friendshipStatus) {
+    public void confirmFriendship(Long userId, Long friendId, FriendshipStatus friendshipStatus) {
         checkFriends(userId, friendId);
-        friendsRepository.confirmOrRejectFriendship(userId,friendId, friendshipStatus);
-        if (friendshipStatus.equals(FriendshipStatus.CONFIRMED)) {
-            eventRepository.save(new Event(null, LocalDateTime.now(), userId, EventType.FRIEND,
-                    Operation.CONFIRM, friendId));
-        }
-        else {
-            eventRepository.save(new Event(null, LocalDateTime.now(), userId, EventType.FRIEND,
-                    Operation.REJECT, friendId));
-        }
+        friendsRepository.confirmOrRejectFriendship(userId, friendId, friendshipStatus);
+        eventRepository.save(new Event(null, LocalDateTime.now(), userId, EventType.FRIEND,
+                Operation.CONFIRM, friendId));
+    }
+
+    @Override
+    public void rejectFriendship(Long userId, Long friendId, FriendshipStatus friendshipStatus) {
+        eventRepository.save(new Event(null, LocalDateTime.now(), userId, EventType.FRIEND,
+                Operation.REJECT, friendId));
         log.info("User with ID = {} {} friendship with user ID = {}", userId, friendshipStatus, friendId);
     }
+
     private void checkFriends(Long userId, Long friendId) {
         if (Objects.equals(userId, friendId)) {
             throw new ValidationException("You cannot add yourself!");

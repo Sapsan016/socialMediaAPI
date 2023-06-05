@@ -15,7 +15,7 @@ import ru.gorbunov.social_media_api.services.UserService;
 
 
 @RestController
-@RequestMapping(value = "/api/v1/admin/")
+@RequestMapping(value = "/api/v2/admin/")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AdminController {
