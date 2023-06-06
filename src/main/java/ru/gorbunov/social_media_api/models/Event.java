@@ -8,20 +8,9 @@ import ru.gorbunov.social_media_api.enums.EventType;
 import ru.gorbunov.social_media_api.enums.Operation;
 import ru.gorbunov.social_media_api.enums.Status;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 import javax.persistence.Column;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.util.Date;
 
 import java.time.LocalDateTime;
@@ -40,8 +29,9 @@ public class Event {
 
     LocalDateTime timestamp;
 
-    @Column(name = "user_id")
-    Long userId;
+    @JoinColumn(name = "user_id")
+    @ManyToOne
+    User user;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "event_type")

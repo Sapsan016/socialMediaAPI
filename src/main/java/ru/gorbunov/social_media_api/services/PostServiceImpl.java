@@ -12,6 +12,7 @@ import ru.gorbunov.social_media_api.exception.ObjectNotFoundException;
 import ru.gorbunov.social_media_api.mappers.PostMapper;
 import ru.gorbunov.social_media_api.models.Event;
 import ru.gorbunov.social_media_api.models.Post;
+import ru.gorbunov.social_media_api.models.User;
 import ru.gorbunov.social_media_api.repositories.EventRepository;
 import ru.gorbunov.social_media_api.repositories.PostRepository;
 import ru.gorbunov.social_media_api.repositories.UserRepository;
@@ -33,9 +34,11 @@ public class PostServiceImpl implements PostService{
     @Override
     public Post addNewPost(AddPostDto postAddDto, Long userId) {
         Post postToAdd = PostMapper.toPost(postAddDto);
-        postToAdd.setUser(userRepository.findById(userId).get());
+        User user = userRepository.findById(userId).orElseThrow(() ->
+                new ObjectNotFoundException(String.format("User with ID = %s was not found", userId)));
+        postToAdd.setUser(user);
         postRepository.save(postToAdd);
-        eventRepository.save(new Event(null, postToAdd.getCreated(), userId, EventType.POST,
+        eventRepository.save(new Event(null, postToAdd.getCreated(), user, EventType.POST,
                 Operation.ADD, postToAdd.getId()));
         log.info("Added post with ID = {}", postToAdd.getId());
         return postToAdd;
@@ -67,7 +70,7 @@ public class PostServiceImpl implements PostService{
         }
         checkUpdate(postToUpdate, addPostDto);
         postRepository.save(postToUpdate);
-        eventRepository.save(new Event(null, LocalDateTime.now(), postToUpdate.getUser().getId(),
+        eventRepository.save(new Event(null, LocalDateTime.now(), postToUpdate.getUser(),
                 EventType.POST, Operation.UPDATE, postId));
         log.info("Updated post with ID = {}", postId);
         return postToUpdate;
@@ -80,7 +83,7 @@ public class PostServiceImpl implements PostService{
             throw new IllegalArgumentException(String.format("User with ID = %d was not author of the post", userId));
         }
         postRepository.delete(postToRemove);
-        eventRepository.save(new Event(null, LocalDateTime.now(), postToRemove.getUser().getId(),
+        eventRepository.save(new Event(null, LocalDateTime.now(), postToRemove.getUser(),
                 EventType.POST, Operation.REMOVE, postId));
         log.info("Removed post with ID = {}", postId);
     }
@@ -96,5 +99,4 @@ public class PostServiceImpl implements PostService{
     private boolean checkPostUser(Post post, Long userId) {
         return !post.getUser().getId().equals(userId);
     }
-
 }
