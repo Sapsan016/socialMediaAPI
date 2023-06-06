@@ -11,5 +11,9 @@ public interface FriendsRepository {
 
     List<Long> getFriendsIds(Long userId);
 
+    boolean isFriends(Long userId);
+
+    public boolean isCanceled(Long userId);
+
 
 }

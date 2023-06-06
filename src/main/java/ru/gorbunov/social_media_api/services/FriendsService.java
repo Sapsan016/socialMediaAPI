@@ -14,4 +14,6 @@ public interface FriendsService {
     void checkFriendshipResponse(Long userId, Long friendId, String friendshipStatus);
 
     List<Event> getUserFeed(Long userId, int from, int size);
+
+    void cancelFriendship(Long userId, Long friendId);
 }

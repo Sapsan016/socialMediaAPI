@@ -55,25 +55,25 @@ public class FriendsServiceImpl implements FriendsService {
         friendsRepository.confirmOrRejectFriendship(userId, friendId, friendshipStatus);
         eventRepository.save(new Event(null, LocalDateTime.now(), getUserById(userId), EventType.FRIEND,
                 Operation.REJECT, friendId));
-        log.info("User with ID = {} {} friendship with user ID = {}", userId, friendshipStatus, friendId);
+        log.info("FriendsService: User with ID = {} {} friendship with user ID = {}", userId, friendshipStatus, friendId);
     }
 
     @Override
     public void checkFriendshipResponse(Long userId, Long friendId, String response) {
         if (response.equals("YES")) {
             FriendshipStatus friendshipStatus = FriendshipStatus.CONFIRMED;
-            log.info("FriendshipService: User with ID = {} wants to {} his friendship with user ID = {}",
-                    friendId, friendshipStatus, userId);
             confirmFriendship(userId, friendId, friendshipStatus.toString());
             addToFriends(friendId, userId);
             confirmFriendship(friendId, userId, friendshipStatus.toString());
+            log.info("FriendshipService: User with ID = {} and with user ID = {} are friends now",
+                    friendId, userId);
         } else if (response.equals("NO")) {
             FriendshipStatus friendshipStatus = FriendshipStatus.REJECTED;
-            log.info("FriendshipService: User with ID = {} wants to {} his friendship with user ID = {}",
-                    friendId, friendshipStatus, userId);
             rejectFriendship(userId, friendId, friendshipStatus.toString());
+            log.info("FriendshipService: User with ID = {} {} his friendship with user ID = {}",
+                    friendId, friendshipStatus, userId);
         } else {
-            throw new IllegalArgumentException("Invalid response parameter");
+            throw new ValidationException("Invalid response parameter");
         }
     }
 
@@ -92,12 +92,31 @@ public class FriendsServiceImpl implements FriendsService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public void cancelFriendship(Long userId, Long friendId) {
+        System.out.println(friendsRepository.isFriends(userId));
+
+        if (friendsRepository.isCanceled(userId)) {
+            throw new ValidationException(String.format("Users with ID = %d has canceled his friendship with user ID = %d",
+                    userId, friendId));
+        }
+        friendsRepository.confirmOrRejectFriendship(userId, friendId, FriendshipStatus.CANCELED.toString());
+        eventRepository.save(new Event(null, LocalDateTime.now(), getUserById(userId), EventType.FRIEND,
+                Operation.CANCEL, friendId));
+        log.info("FriendsService: User with ID = {} canceled friendship with user ID = {}", userId, friendId);
+
+    }
+
     private void checkFriends(Long userId, Long friendId) {
         if (Objects.equals(userId, friendId)) {
-            throw new ValidationException("You cannot add yourself!");
+            throw new ValidationException("You cannot add yourself as a friend!");
         }
         if (userRepository.findById(friendId).isEmpty()) {
-            throw new ObjectNotFoundException(String.format("User with ID = %s was not found", friendId));
+            throw new ObjectNotFoundException(String.format("User with ID = %d was not found", friendId));
+        }
+        if (friendsRepository.isFriends(userId)) {
+            throw new ValidationException(String.format("Users with ID = %d and ID = %d are friends already",
+                    userId, friendId));
         }
     }
 
