@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @Table(name = "events")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Event {
+public class Event implements Comparable<Event> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "event_id")
@@ -43,4 +43,8 @@ public class Event {
     @Column(name = "entity_id")
     Long entityId;
 
+    @Override
+    public int compareTo(Event otherEvent) {
+        return getTimestamp().compareTo(otherEvent.getTimestamp());
+    }
 }
