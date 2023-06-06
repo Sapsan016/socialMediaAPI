@@ -17,9 +17,12 @@ public class FriendsRepositoryImpl implements FriendsRepository {
     }
 
     @Override
-    public void confirmOrRejectFriendship(Long userId, Long friendId, FriendshipStatus friendshipStatus) {
-        String sqlQuery = "UPDATE user_friends SET friendship = ? where USER_ID = ? and FRIEND_ID = ?";
-        jdbcTemplate.update(sqlQuery, friendshipStatus.toString(), userId, friendId);
+    public void confirmOrRejectFriendship(Long userId, Long friendId, String friendshipStatus) {
+        String sqlQuery = "UPDATE user_friends SET friendship = ? where user_id = ? and friend_id = ?";
+     jdbcTemplate.update(sqlQuery, friendshipStatus, userId, friendId);
+
+   //     jdbcTemplate.update("UPDATE user_friends SET friendship = 'TEST' where user_id = 2 and friend_id = 1");
+
 
     }
 }

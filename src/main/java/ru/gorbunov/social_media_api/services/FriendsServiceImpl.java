@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.gorbunov.social_media_api.enums.EventType;
 import ru.gorbunov.social_media_api.enums.FriendshipStatus;
 import ru.gorbunov.social_media_api.enums.Operation;
@@ -36,9 +37,8 @@ public class FriendsServiceImpl implements FriendsService {
         log.info("User with ID = {} added friend with ID = {}", userId, friendId);
     }
 
-
     @Override
-    public void confirmFriendship(Long userId, Long friendId, FriendshipStatus friendshipStatus) {
+    public void confirmFriendship(Long userId, Long friendId, String friendshipStatus) {
         checkFriends(userId, friendId);
         friendsRepository.confirmOrRejectFriendship(userId, friendId, friendshipStatus);
         eventRepository.save(new Event(null, LocalDateTime.now(), userId, EventType.FRIEND,
@@ -46,10 +46,32 @@ public class FriendsServiceImpl implements FriendsService {
     }
 
     @Override
-    public void rejectFriendship(Long userId, Long friendId, FriendshipStatus friendshipStatus) {
+    public void rejectFriendship(Long userId, Long friendId, String friendshipStatus) {
+        friendsRepository.confirmOrRejectFriendship(userId, friendId, friendshipStatus);
         eventRepository.save(new Event(null, LocalDateTime.now(), userId, EventType.FRIEND,
                 Operation.REJECT, friendId));
         log.info("User with ID = {} {} friendship with user ID = {}", userId, friendshipStatus, friendId);
+    }
+
+    @Override
+    public void checkFriendshipResponse(Long userId, Long friendId, String response) {
+        if (response.equals("YES")) {
+            FriendshipStatus friendshipStatus = FriendshipStatus.CONFIRMED;
+            log.info("FriendshipService: User with ID = {} wants to {} his friendship with user ID = {}",
+                    friendId, friendshipStatus, userId);
+            confirmFriendship(userId, friendId, friendshipStatus.toString());
+            addToFriends(friendId, userId);
+            confirmFriendship(friendId, userId, friendshipStatus.toString());
+        }
+        else if (response.equals("NO")) {
+            FriendshipStatus friendshipStatus = FriendshipStatus.REJECTED;
+            log.info("FriendshipService: User with ID = {} wants to {} his friendship with user ID = {}",
+                    friendId, friendshipStatus, userId);
+            rejectFriendship(userId, friendId, friendshipStatus.toString());
+        }
+        else {
+            throw new IllegalArgumentException("Invalid response parameter");
+        }
     }
 
     private void checkFriends(Long userId, Long friendId) {
