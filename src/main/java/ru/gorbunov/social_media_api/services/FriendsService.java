@@ -8,4 +8,6 @@ public interface FriendsService {
     void confirmFriendship(Long userId, Long friendId, String friendshipStatus);
 
     void rejectFriendship(Long userId, Long friendId, String friendshipStatus);
+
+    void checkFriendshipResponse(Long userId, Long friendId, String friendshipStatus);
 }

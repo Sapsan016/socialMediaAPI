@@ -37,7 +37,6 @@ public class FriendsServiceImpl implements FriendsService {
         log.info("User with ID = {} added friend with ID = {}", userId, friendId);
     }
 
-
     @Override
     public void confirmFriendship(Long userId, Long friendId, String friendshipStatus) {
         checkFriends(userId, friendId);
@@ -52,6 +51,27 @@ public class FriendsServiceImpl implements FriendsService {
         eventRepository.save(new Event(null, LocalDateTime.now(), userId, EventType.FRIEND,
                 Operation.REJECT, friendId));
         log.info("User with ID = {} {} friendship with user ID = {}", userId, friendshipStatus, friendId);
+    }
+
+    @Override
+    public void checkFriendshipResponse(Long userId, Long friendId, String response) {
+        if (response.equals("YES")) {
+            FriendshipStatus friendshipStatus = FriendshipStatus.CONFIRMED;
+            log.info("FriendshipService: User with ID = {} wants to {} his friendship with user ID = {}",
+                    friendId, friendshipStatus, userId);
+            confirmFriendship(userId, friendId, friendshipStatus.toString());
+            addToFriends(friendId, userId);
+            confirmFriendship(friendId, userId, friendshipStatus.toString());
+        }
+        else if (response.equals("NO")) {
+            FriendshipStatus friendshipStatus = FriendshipStatus.REJECTED;
+            log.info("FriendshipService: User with ID = {} wants to {} his friendship with user ID = {}",
+                    friendId, friendshipStatus, userId);
+            rejectFriendship(userId, friendId, friendshipStatus.toString());
+        }
+        else {
+            throw new IllegalArgumentException("Invalid response parameter");
+        }
     }
 
     private void checkFriends(Long userId, Long friendId) {

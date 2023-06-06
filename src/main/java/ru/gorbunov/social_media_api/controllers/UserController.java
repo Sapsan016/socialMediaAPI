@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.gorbunov.social_media_api.dto.AddPostDto;
 import ru.gorbunov.social_media_api.dto.PostDto;
-import ru.gorbunov.social_media_api.enums.FriendshipStatus;
 import ru.gorbunov.social_media_api.mappers.PostMapper;
 import ru.gorbunov.social_media_api.services.FriendsService;
 import ru.gorbunov.social_media_api.services.PostService;
@@ -80,21 +79,8 @@ public class UserController {
     @PatchMapping(value = "/{userId}/friend/respond/{friendId}/{response}")
     public void confirmFriendship(@PathVariable Long userId, @PathVariable Long friendId,
                                   @PathVariable String response) {
-        if (response.equals("YES")) {
-            FriendshipStatus friendshipStatus = FriendshipStatus.CONFIRMED;
-
-            log.info("UserController: User with ID = {} wants to {} his friendship with user ID = {}",
-                    friendId, friendshipStatus, userId);
-            friendsService.confirmFriendship(userId, friendId, friendshipStatus.toString());
-        }
-       else if (response.equals("NO")) {
-            FriendshipStatus friendshipStatus = FriendshipStatus.REJECTED;
-            log.info("UserController: User with ID = {} wants to {} his friendship with user ID = {}",
-                    friendId, friendshipStatus, userId);
-            friendsService.rejectFriendship(userId, friendId, friendshipStatus.toString());
-        }
-       else {
-           throw new IllegalArgumentException("Invalid response parameter");
-        }
+        friendsService.checkFriendshipResponse(userId, friendId, response);
+        log.info("UserController: User with ID = {} wants to {} his friendship with user ID = {}",
+                friendId, response, userId);
     }
 }
