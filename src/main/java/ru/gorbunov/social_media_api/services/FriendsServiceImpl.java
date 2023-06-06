@@ -5,13 +5,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.gorbunov.social_media_api.enums.EventType;
 import ru.gorbunov.social_media_api.enums.FriendshipStatus;
 import ru.gorbunov.social_media_api.enums.Operation;
 import ru.gorbunov.social_media_api.exception.ObjectNotFoundException;
 import ru.gorbunov.social_media_api.exception.ValidationException;
 import ru.gorbunov.social_media_api.models.Event;
+import ru.gorbunov.social_media_api.models.User;
 import ru.gorbunov.social_media_api.repositories.EventRepository;
 import ru.gorbunov.social_media_api.repositories.FriendsRepository;
 import ru.gorbunov.social_media_api.repositories.UserRepository;
@@ -33,7 +33,8 @@ public class FriendsServiceImpl implements FriendsService {
     public void addToFriends(Long userId, Long friendId) {
         checkFriends(userId, friendId);
         friendsRepository.addToFriends(userId, friendId);
-        eventRepository.save(new Event(null, LocalDateTime.now(), userId, EventType.FRIEND, Operation.ADD, friendId));
+        eventRepository.save(new Event(null, LocalDateTime.now(), getUserById(userId), EventType.FRIEND,
+                Operation.ADD, friendId));
         log.info("User with ID = {} added friend with ID = {}", userId, friendId);
     }
 
@@ -41,14 +42,14 @@ public class FriendsServiceImpl implements FriendsService {
     public void confirmFriendship(Long userId, Long friendId, String friendshipStatus) {
         checkFriends(userId, friendId);
         friendsRepository.confirmOrRejectFriendship(userId, friendId, friendshipStatus);
-        eventRepository.save(new Event(null, LocalDateTime.now(), userId, EventType.FRIEND,
+        eventRepository.save(new Event(null, LocalDateTime.now(), getUserById(userId), EventType.FRIEND,
                 Operation.CONFIRM, friendId));
     }
 
     @Override
     public void rejectFriendship(Long userId, Long friendId, String friendshipStatus) {
         friendsRepository.confirmOrRejectFriendship(userId, friendId, friendshipStatus);
-        eventRepository.save(new Event(null, LocalDateTime.now(), userId, EventType.FRIEND,
+        eventRepository.save(new Event(null, LocalDateTime.now(), getUserById(userId), EventType.FRIEND,
                 Operation.REJECT, friendId));
         log.info("User with ID = {} {} friendship with user ID = {}", userId, friendshipStatus, friendId);
     }
@@ -82,4 +83,9 @@ public class FriendsServiceImpl implements FriendsService {
             throw new ObjectNotFoundException(String.format("User with ID = %s was not found", friendId));
         }
     }
+    private User getUserById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() ->
+                new ObjectNotFoundException(String.format("User with ID = %s was not found", userId)));
+    }
+
 }
