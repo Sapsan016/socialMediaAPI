@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import ru.gorbunov.social_media_api.dto.AddPostDto;
+import ru.gorbunov.social_media_api.dto.EventDto;
 import ru.gorbunov.social_media_api.dto.PostDto;
+import ru.gorbunov.social_media_api.mappers.EventMapper;
 import ru.gorbunov.social_media_api.mappers.PostMapper;
 import ru.gorbunov.social_media_api.services.FriendsService;
 import ru.gorbunov.social_media_api.services.PostService;
@@ -82,5 +84,15 @@ public class UserController {
         friendsService.checkFriendshipResponse(userId, friendId, response);
         log.info("UserController: User with ID = {} wants to {} his friendship with user ID = {}",
                 friendId, response, userId);
+    }
+    @GetMapping("/{userId}/feed")
+    public List<EventDto> getUserFeed(@PathVariable Long userId,
+                                      @RequestParam(defaultValue = "0") Integer from,
+                                      @RequestParam(defaultValue = "10") int size) {
+        log.info("UserController: Request to get feed for a user with ID = {}, starting from: {}, list size: {}",
+                userId, from, size);
+        return friendsService.getUserFeed(userId, from, size) .stream()
+                .map(EventMapper::toDto)
+                .collect(Collectors.toList());
     }
 }

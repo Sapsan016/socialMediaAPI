@@ -17,7 +17,11 @@ import ru.gorbunov.social_media_api.repositories.FriendsRepository;
 import ru.gorbunov.social_media_api.repositories.UserRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -63,16 +67,29 @@ public class FriendsServiceImpl implements FriendsService {
             confirmFriendship(userId, friendId, friendshipStatus.toString());
             addToFriends(friendId, userId);
             confirmFriendship(friendId, userId, friendshipStatus.toString());
-        }
-        else if (response.equals("NO")) {
+        } else if (response.equals("NO")) {
             FriendshipStatus friendshipStatus = FriendshipStatus.REJECTED;
             log.info("FriendshipService: User with ID = {} wants to {} his friendship with user ID = {}",
                     friendId, friendshipStatus, userId);
             rejectFriendship(userId, friendId, friendshipStatus.toString());
-        }
-        else {
+        } else {
             throw new IllegalArgumentException("Invalid response parameter");
         }
+    }
+
+    @Override
+    public List<Event> getUserFeed(Long userId, int from, int size) {
+        List<Long> friendsIds = friendsRepository.getFriendsIds(userId);
+        List<Event> events = new ArrayList<>();
+        for (Long id : friendsIds) {
+            List<Event> userEvents = eventRepository.findAllByUserId(id);
+            events.addAll(userEvents);
+        }
+        return events.stream()
+                .sorted(Comparator.comparing(Event::getTimestamp).reversed())
+                .skip(from)
+                .limit(size)
+                .collect(Collectors.toList());
     }
 
     private void checkFriends(Long userId, Long friendId) {
@@ -83,6 +100,7 @@ public class FriendsServiceImpl implements FriendsService {
             throw new ObjectNotFoundException(String.format("User with ID = %s was not found", friendId));
         }
     }
+
     private User getUserById(Long userId) {
         return userRepository.findById(userId).orElseThrow(() ->
                 new ObjectNotFoundException(String.format("User with ID = %s was not found", userId)));
