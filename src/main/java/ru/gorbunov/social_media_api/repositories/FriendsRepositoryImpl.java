@@ -29,8 +29,20 @@ public class FriendsRepositoryImpl implements FriendsRepository {
 
     @Override
     public List<Long> getFriendsIds(Long userId) {
-        String sqlQuery = "SELECT friend_id FROM user_friends where user_id = ?";
+        String sqlQuery = "SELECT friend_id FROM user_friends where user_id = ? and friendship not in ('CANCELED')";
         return jdbcTemplate.query(sqlQuery, FriendsRepositoryImpl::mapRowToId, userId);
+    }
+
+    @Override
+    public boolean isFriends(Long userId) {
+        String sqlQuery = "SELECT friend_id FROM user_friends where user_id = ?";
+        return !jdbcTemplate.queryForList(sqlQuery, Long.class, userId).isEmpty();
+    }
+
+    @Override
+    public boolean isCanceled(Long userId) {
+        String sqlQuery = "SELECT friend_id FROM user_friends where user_id = ? and friendship like 'CANCELED'";
+        return !jdbcTemplate.queryForList(sqlQuery, Long.class, userId).isEmpty();
     }
 
     public static Long mapRowToId(ResultSet resultSet, int rowNum) throws SQLException {

@@ -85,13 +85,20 @@ public class UserController {
         log.info("UserController: User with ID = {} wants to {} his friendship with user ID = {}",
                 friendId, response, userId);
     }
+
+    @PatchMapping(value = "/{userId}/friend/cancel/{friendId}")
+    public void cancelFriendship(@PathVariable Long userId, @PathVariable Long friendId) {
+        log.info("UserController: User with ID = {} wants to cancel his friendship with user ID = {}", userId, friendId);
+        friendsService.cancelFriendship(userId, friendId);
+    }
+
     @GetMapping("/{userId}/feed")
     public List<EventDto> getUserFeed(@PathVariable Long userId,
                                       @RequestParam(defaultValue = "0") Integer from,
                                       @RequestParam(defaultValue = "10") int size) {
         log.info("UserController: Request to get feed for a user with ID = {}, starting from: {}, list size: {}",
                 userId, from, size);
-        return friendsService.getUserFeed(userId, from, size) .stream()
+        return friendsService.getUserFeed(userId, from, size).stream()
                 .map(EventMapper::toDto)
                 .collect(Collectors.toList());
     }

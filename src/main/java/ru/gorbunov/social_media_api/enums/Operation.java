@@ -5,5 +5,6 @@ public enum Operation {
     ADD,
     UPDATE,
     CONFIRM,
-    REJECT
+    REJECT,
+    CANCEL
 }
