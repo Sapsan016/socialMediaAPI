@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.gorbunov.social_media_api.enums.EventType;
 import ru.gorbunov.social_media_api.enums.FriendshipStatus;
 import ru.gorbunov.social_media_api.enums.Operation;
@@ -38,7 +39,7 @@ public class FriendsServiceImpl implements FriendsService {
 
 
     @Override
-    public void confirmFriendship(Long userId, Long friendId, FriendshipStatus friendshipStatus) {
+    public void confirmFriendship(Long userId, Long friendId, String friendshipStatus) {
         checkFriends(userId, friendId);
         friendsRepository.confirmOrRejectFriendship(userId, friendId, friendshipStatus);
         eventRepository.save(new Event(null, LocalDateTime.now(), userId, EventType.FRIEND,
@@ -46,7 +47,8 @@ public class FriendsServiceImpl implements FriendsService {
     }
 
     @Override
-    public void rejectFriendship(Long userId, Long friendId, FriendshipStatus friendshipStatus) {
+    public void rejectFriendship(Long userId, Long friendId, String friendshipStatus) {
+        friendsRepository.confirmOrRejectFriendship(userId, friendId, friendshipStatus);
         eventRepository.save(new Event(null, LocalDateTime.now(), userId, EventType.FRIEND,
                 Operation.REJECT, friendId));
         log.info("User with ID = {} {} friendship with user ID = {}", userId, friendshipStatus, friendId);

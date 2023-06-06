@@ -82,15 +82,16 @@ public class UserController {
                                   @PathVariable String response) {
         if (response.equals("YES")) {
             FriendshipStatus friendshipStatus = FriendshipStatus.CONFIRMED;
+
             log.info("UserController: User with ID = {} wants to {} his friendship with user ID = {}",
                     friendId, friendshipStatus, userId);
-            friendsService.confirmFriendship(userId, friendId, friendshipStatus);
+            friendsService.confirmFriendship(userId, friendId, friendshipStatus.toString());
         }
        else if (response.equals("NO")) {
             FriendshipStatus friendshipStatus = FriendshipStatus.REJECTED;
             log.info("UserController: User with ID = {} wants to {} his friendship with user ID = {}",
                     friendId, friendshipStatus, userId);
-            friendsService.rejectFriendship(userId, friendId, friendshipStatus);
+            friendsService.rejectFriendship(userId, friendId, friendshipStatus.toString());
         }
        else {
            throw new IllegalArgumentException("Invalid response parameter");

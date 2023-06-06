@@ -53,10 +53,5 @@ public class ErrorHandler {
                 "FORBIDDEN", "JWT token is expired or invalid",
                 LocalDateTime.now().format(FORMATTER));
     }
-
-
-
-
-
 }
 
