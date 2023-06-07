@@ -42,7 +42,7 @@ role - роль пользователя в системе, содержит у�
 
 
 
-Стек технологий: Java11, Spring Boot 2.7, Maven, PostgreSQL, Lombok, Spring JPA, REST, Docker, Hibernate
+Стек технологий: Java18, Spring Boot 2.7, Spring Security, Maven, PostgreSQL, Lombok, Spring JPA, REST, Hibernate, LiquiBase
 
 ## Схема БД
 

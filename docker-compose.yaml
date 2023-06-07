@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:14-alpine
+    container_name: social_media_API-db-container
+    volumes:
+      - /var/lib/postgresql/data/
+    ports:
+      - "6541:5432"
+    environment:
+      - POSTGRES_DB=social_media_API
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=CHS2t1062
+
+  server:
+    build: .
+    image: social_media_api_server
+    container_name: social_media_api-server-container
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/social_media_API
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=CHS2t1062
+
+
