@@ -1,11 +1,13 @@
 package ru.gorbunov.social_media_api.exception;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.gorbunov.social_media_api.security.jwt.JwtAuthenticationException;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -28,10 +30,30 @@ public class ErrorHandler {
     }
     @ExceptionHandler
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ErrorResponse JwtAuthenticationException(final JwtAuthenticationException e) {
+    public ErrorResponse jwtAuthenticationException(final JwtAuthenticationException e) {
         return new ErrorResponse(e.getMessage(),
                 "FORBIDDEN", "JWT token is expired or invalid",
                 LocalDateTime.now().format(FORMATTER));
+    }
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse dataViolationException(final ConstraintViolationException e) {
+        return new ErrorResponse(e.getMessage(),
+                "CONFLICT", "Нарушение целостности данных",
+                LocalDateTime.now().format(FORMATTER));
+    }
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse dataException(final DataIntegrityViolationException e) {
+        return new ErrorResponse(e.getMessage(),
+                "CONFLICT", "Нарушение целостности данных",
+                LocalDateTime.now().format(FORMATTER));
+    }
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse illegalArgumentRequest(final IllegalArgumentException e) {
+        return new ErrorResponse(e.getMessage(),
+                "BAD_REQUEST", "Неверный запрос.", LocalDateTime.now().format(FORMATTER));
     }
 }
 
