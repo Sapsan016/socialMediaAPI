@@ -45,13 +45,6 @@ public class UserServiceImpl implements UserService {
         return registeredUser;
     }
 
-//    @Override
-//    public List<User> getAll() {
-//        List<User> result = userRepository.findAll();
-//        log.info("IN getAll - {} users found", result.size());
-//        return result;
-//    }
-
     @Override
     public User findByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(() ->
@@ -64,9 +57,9 @@ public class UserServiceImpl implements UserService {
                 new ObjectNotFoundException(String.format("User with ID = %s was not found", userId)));
     }
 
-//    @Override
-//    public void delete(Long id) {
-//        userRepository.deleteById(id);
-//        log.info("IN delete - user with id: {} successfully deleted");
-//    }
+    @Override
+    public void delete(Long userId) {
+        userRepository.deleteById(userId);
+        log.info("IN delete - user with id: {} successfully deleted", userId);
+    }
 }
