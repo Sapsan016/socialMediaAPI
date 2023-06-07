@@ -70,7 +70,7 @@
 							"});\r",
 							"pm.test(\"Test create user\", function () {\r",
 							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.id).to.eql(3);\r",
+							"    pm.expect(jsonData.id).to.eql(4);\r",
 							"    pm.expect(jsonData.username).to.eql('Newtestuser');\r",
 							"    pm.expect(jsonData.email).to.eql('1234test@ya.ru');\r",
 							"    pm.expect(jsonData.status).to.eql('ACTIVE');\r",
@@ -198,6 +198,30 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const loginRequest = {\r",
+							"    url: 'http://localhost:8080/api/v2/auth/login',\r",
+							"    method: 'POST',\r",
+							"    header: 'Content-Type: application/json',\r",
+							"    body: {\r",
+							"        mode: 'application/json',\r",
+							"        raw: JSON.stringify({        \r",
+							"            \"username\": \"tester\",\r",
+							"            \"password\": \"test\"\r",
+							"        })\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(loginRequest, function (err, response) {\r",
+							"    pm.environment.set(\"ACCESS_TOKEN\", response.json().token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"protocolProfileBehavior": {
@@ -211,7 +235,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sImlhdCI6MTY4NjEyOTQwMCwiZXhwIjoxNjg2MTMzMDAwfQ.xFaAKRk_lsNTH-Cbs1bXoTP5_-fJ9p2Z-sMmyacdrUo",
+						"value": "Bearer_{{ACCESS_TOKEN}}",
 						"type": "text"
 					},
 					{
@@ -222,7 +246,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n  \"username\": \"tester\",\r\n  \"pasword\": \"test\"\r\n}\r\n  ",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -267,6 +291,30 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const loginRequest = {\r",
+							"    url: 'http://localhost:8080/api/v2/auth/login',\r",
+							"    method: 'POST',\r",
+							"    header: 'Content-Type: application/json',\r",
+							"    body: {\r",
+							"        mode: 'application/json',\r",
+							"        raw: JSON.stringify({        \r",
+							"            \"username\": \"tester\",\r",
+							"            \"password\": \"test\"\r",
+							"        })\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(loginRequest, function (err, response) {\r",
+							"    pm.environment.set(\"ACCESS_TOKEN\", response.json().token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -274,7 +322,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sImlhdCI6MTY4NjEyOTQwMCwiZXhwIjoxNjg2MTMzMDAwfQ.xFaAKRk_lsNTH-Cbs1bXoTP5_-fJ9p2Z-sMmyacdrUo",
+						"value": "Bearer_{{ACCESS_TOKEN}}",
 						"type": "text"
 					}
 				],
@@ -324,6 +372,30 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const loginRequest = {\r",
+							"    url: 'http://localhost:8080/api/v2/auth/login',\r",
+							"    method: 'POST',\r",
+							"    header: 'Content-Type: application/json',\r",
+							"    body: {\r",
+							"        mode: 'application/json',\r",
+							"        raw: JSON.stringify({        \r",
+							"            \"username\": \"tester\",\r",
+							"            \"password\": \"test\"\r",
+							"        })\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(loginRequest, function (err, response) {\r",
+							"    pm.environment.set(\"ACCESS_TOKEN\", response.json().token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"protocolProfileBehavior": {
@@ -337,7 +409,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sImlhdCI6MTY4NjEyOTQwMCwiZXhwIjoxNjg2MTMzMDAwfQ.xFaAKRk_lsNTH-Cbs1bXoTP5_-fJ9p2Z-sMmyacdrUo",
+						"value": "Bearer_{{ACCESS_TOKEN}}",
 						"type": "text"
 					},
 					{
@@ -396,6 +468,30 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const loginRequest = {\r",
+							"    url: 'http://localhost:8080/api/v2/auth/login',\r",
+							"    method: 'POST',\r",
+							"    header: 'Content-Type: application/json',\r",
+							"    body: {\r",
+							"        mode: 'application/json',\r",
+							"        raw: JSON.stringify({        \r",
+							"            \"username\": \"tester\",\r",
+							"            \"password\": \"test\"\r",
+							"        })\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(loginRequest, function (err, response) {\r",
+							"    pm.environment.set(\"ACCESS_TOKEN\", response.json().token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"protocolProfileBehavior": {
@@ -409,7 +505,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sImlhdCI6MTY4NjEyOTQwMCwiZXhwIjoxNjg2MTMzMDAwfQ.xFaAKRk_lsNTH-Cbs1bXoTP5_-fJ9p2Z-sMmyacdrUo",
+						"value": "Bearer_{{ACCESS_TOKEN}}",
 						"type": "text"
 					},
 					{
@@ -462,6 +558,30 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const loginRequest = {\r",
+							"    url: 'http://localhost:8080/api/v2/auth/login',\r",
+							"    method: 'POST',\r",
+							"    header: 'Content-Type: application/json',\r",
+							"    body: {\r",
+							"        mode: 'application/json',\r",
+							"        raw: JSON.stringify({        \r",
+							"            \"username\": \"tester\",\r",
+							"            \"password\": \"test\"\r",
+							"        })\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(loginRequest, function (err, response) {\r",
+							"    pm.environment.set(\"ACCESS_TOKEN\", response.json().token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"protocolProfileBehavior": {
@@ -475,7 +595,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sImlhdCI6MTY4NjEyOTQwMCwiZXhwIjoxNjg2MTMzMDAwfQ.xFaAKRk_lsNTH-Cbs1bXoTP5_-fJ9p2Z-sMmyacdrUo",
+						"value": "Bearer_{{ACCESS_TOKEN}}",
 						"type": "text"
 					},
 					{
@@ -531,6 +651,30 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const loginRequest = {\r",
+							"    url: 'http://localhost:8080/api/v2/auth/login',\r",
+							"    method: 'POST',\r",
+							"    header: 'Content-Type: application/json',\r",
+							"    body: {\r",
+							"        mode: 'application/json',\r",
+							"        raw: JSON.stringify({        \r",
+							"            \"username\": \"tester\",\r",
+							"            \"password\": \"test\"\r",
+							"        })\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(loginRequest, function (err, response) {\r",
+							"    pm.environment.set(\"ACCESS_TOKEN\", response.json().token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -538,7 +682,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sImlhdCI6MTY4NjEyOTQwMCwiZXhwIjoxNjg2MTMzMDAwfQ.xFaAKRk_lsNTH-Cbs1bXoTP5_-fJ9p2Z-sMmyacdrUo",
+						"value": "Bearer_{{ACCESS_TOKEN}}",
 						"type": "text"
 					}
 				],
@@ -590,6 +734,30 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const loginRequest = {\r",
+							"    url: 'http://localhost:8080/api/v2/auth/login',\r",
+							"    method: 'POST',\r",
+							"    header: 'Content-Type: application/json',\r",
+							"    body: {\r",
+							"        mode: 'application/json',\r",
+							"        raw: JSON.stringify({        \r",
+							"            \"username\": \"tester\",\r",
+							"            \"password\": \"test\"\r",
+							"        })\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(loginRequest, function (err, response) {\r",
+							"    pm.environment.set(\"ACCESS_TOKEN\", response.json().token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -597,7 +765,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sImlhdCI6MTY4NjEyOTQwMCwiZXhwIjoxNjg2MTMzMDAwfQ.xFaAKRk_lsNTH-Cbs1bXoTP5_-fJ9p2Z-sMmyacdrUo",
+						"value": "Bearer_{{ACCESS_TOKEN}}",
 						"type": "text"
 					}
 				],
@@ -636,6 +804,33 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
+							"const loginRequest = {\r",
+							"    url: 'http://localhost:8080/api/v2/auth/login',\r",
+							"    method: 'POST',\r",
+							"    header: 'Content-Type: application/json',\r",
+							"    body: {\r",
+							"        mode: 'application/json',\r",
+							"        raw: JSON.stringify({        \r",
+							"            \"username\": \"tester\",\r",
+							"            \"password\": \"test\"\r",
+							"        })\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(loginRequest, function (err, response) {\r",
+							"    pm.environment.set(\"ACCESS_TOKEN\", response.json().token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 404\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([404]);\r",
+							"});\r",
 							""
 						],
 						"type": "text/javascript"
@@ -650,7 +845,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sImlhdCI6MTY4NjEyOTQwMCwiZXhwIjoxNjg2MTMzMDAwfQ.xFaAKRk_lsNTH-Cbs1bXoTP5_-fJ9p2Z-sMmyacdrUo",
+						"value": "Bearer_{{ACCESS_TOKEN}}",
 						"type": "text"
 					}
 				],
@@ -680,7 +875,22 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							""
+							"const loginRequest = {\r",
+							"    url: 'http://localhost:8080/api/v2/auth/login',\r",
+							"    method: 'POST',\r",
+							"    header: 'Content-Type: application/json',\r",
+							"    body: {\r",
+							"        mode: 'application/json',\r",
+							"        raw: JSON.stringify({        \r",
+							"            \"username\": \"tester\",\r",
+							"            \"password\": \"test\"\r",
+							"        })\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(loginRequest, function (err, response) {\r",
+							"    pm.environment.set(\"ACCESS_TOKEN\", response.json().token);\r",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -705,7 +915,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sImlhdCI6MTY4NjEyOTQwMCwiZXhwIjoxNjg2MTMzMDAwfQ.xFaAKRk_lsNTH-Cbs1bXoTP5_-fJ9p2Z-sMmyacdrUo",
+						"value": "Bearer_{{ACCESS_TOKEN}}",
 						"type": "text"
 					}
 				],
@@ -735,6 +945,33 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
+							"const loginRequest = {\r",
+							"    url: 'http://localhost:8080/api/v2/auth/login',\r",
+							"    method: 'POST',\r",
+							"    header: 'Content-Type: application/json',\r",
+							"    body: {\r",
+							"        mode: 'application/json',\r",
+							"        raw: JSON.stringify({        \r",
+							"            \"username\": \"tester\",\r",
+							"            \"password\": \"test\"\r",
+							"        })\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(loginRequest, function (err, response) {\r",
+							"    pm.environment.set(\"ACCESS_TOKEN\", response.json().token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+							"});\r",
 							""
 						],
 						"type": "text/javascript"
@@ -749,7 +986,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sImlhdCI6MTY4NjA4Mjk0NywiZXhwIjoxNjg2MDg2NTQ3fQ.CHd6ZmA6TG5Fpzg4WV3tevUNXcT-Nz6Lx46Evz1CqTQ",
+						"value": "Bearer_{{ACCESS_TOKEN}}",
 						"type": "text"
 					}
 				],
@@ -785,6 +1022,30 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const loginRequest = {\r",
+							"    url: 'http://localhost:8080/api/v2/auth/login',\r",
+							"    method: 'POST',\r",
+							"    header: 'Content-Type: application/json',\r",
+							"    body: {\r",
+							"        mode: 'application/json',\r",
+							"        raw: JSON.stringify({        \r",
+							"            \"username\": \"tester\",\r",
+							"            \"password\": \"test\"\r",
+							"        })\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(loginRequest, function (err, response) {\r",
+							"    pm.environment.set(\"ACCESS_TOKEN\", response.json().token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -792,7 +1053,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sImlhdCI6MTY4NjEyOTQwMCwiZXhwIjoxNjg2MTMzMDAwfQ.xFaAKRk_lsNTH-Cbs1bXoTP5_-fJ9p2Z-sMmyacdrUo",
+						"value": "Bearer_{{ACCESS_TOKEN}}",
 						"type": "text"
 					}
 				],
@@ -830,6 +1091,30 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const loginRequest = {\r",
+							"    url: 'http://localhost:8080/api/v2/auth/login',\r",
+							"    method: 'POST',\r",
+							"    header: 'Content-Type: application/json',\r",
+							"    body: {\r",
+							"        mode: 'application/json',\r",
+							"        raw: JSON.stringify({        \r",
+							"            \"username\": \"tester\",\r",
+							"            \"password\": \"test\"\r",
+							"        })\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(loginRequest, function (err, response) {\r",
+							"    pm.environment.set(\"ACCESS_TOKEN\", response.json().token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"protocolProfileBehavior": {
@@ -843,7 +1128,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sImlhdCI6MTY4NjEyOTQwMCwiZXhwIjoxNjg2MTMzMDAwfQ.xFaAKRk_lsNTH-Cbs1bXoTP5_-fJ9p2Z-sMmyacdrUo",
+						"value": "Bearer_{{ACCESS_TOKEN}}",
 						"type": "text"
 					},
 					{
@@ -881,12 +1166,50 @@
 		},
 		{
 			"name": "Delete post id=1 failed wrong username",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const loginRequest = {\r",
+							"    url: 'http://localhost:8080/api/v2/auth/login',\r",
+							"    method: 'POST',\r",
+							"    header: 'Content-Type: application/json',\r",
+							"    body: {\r",
+							"        mode: 'application/json',\r",
+							"        raw: JSON.stringify({        \r",
+							"            \"username\": \"tester\",\r",
+							"            \"password\": \"test\"\r",
+							"        })\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(loginRequest, function (err, response) {\r",
+							"    pm.environment.set(\"ACCESS_TOKEN\", response.json().token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([400]);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sImlhdCI6MTY4NjEyOTQwMCwiZXhwIjoxNjg2MTMzMDAwfQ.xFaAKRk_lsNTH-Cbs1bXoTP5_-fJ9p2Z-sMmyacdrUo",
+						"value": "Bearer_{{ACCESS_TOKEN}}",
 						"type": "text"
 					}
 				],
@@ -932,6 +1255,30 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const loginRequest = {\r",
+							"    url: 'http://localhost:8080/api/v2/auth/login',\r",
+							"    method: 'POST',\r",
+							"    header: 'Content-Type: application/json',\r",
+							"    body: {\r",
+							"        mode: 'application/json',\r",
+							"        raw: JSON.stringify({        \r",
+							"            \"username\": \"tester\",\r",
+							"            \"password\": \"test\"\r",
+							"        })\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(loginRequest, function (err, response) {\r",
+							"    pm.environment.set(\"ACCESS_TOKEN\", response.json().token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -939,7 +1286,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sImlhdCI6MTY4NTk5OTcxMiwiZXhwIjoxNjg2MDAzMzEyfQ.Enhrhl-fztieE2365kjZ2blImMgTUpam3fcCmVIgB0w",
+						"value": "Bearer_{{ACCESS_TOKEN}}",
 						"type": "text"
 					}
 				],
@@ -953,7 +1300,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v2/users/1/post/1",
+					"raw": "http://localhost:8080/api/v2/users/2/post/1",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -963,7 +1310,7 @@
 						"api",
 						"v2",
 						"users",
-						"1",
+						"2",
 						"post",
 						"1"
 					]
@@ -978,7 +1325,22 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
-							""
+							"const loginRequest = {\r",
+							"    url: 'http://localhost:8080/api/v2/auth/login',\r",
+							"    method: 'POST',\r",
+							"    header: 'Content-Type: application/json',\r",
+							"    body: {\r",
+							"        mode: 'application/json',\r",
+							"        raw: JSON.stringify({        \r",
+							"            \"username\": \"tester\",\r",
+							"            \"password\": \"test\"\r",
+							"        })\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(loginRequest, function (err, response) {\r",
+							"    pm.environment.set(\"ACCESS_TOKEN\", response.json().token);\r",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -1004,7 +1366,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sImlhdCI6MTY4NjEyOTQwMCwiZXhwIjoxNjg2MTMzMDAwfQ.xFaAKRk_lsNTH-Cbs1bXoTP5_-fJ9p2Z-sMmyacdrUo",
+						"value": "Bearer_{{ACCESS_TOKEN}}",
 						"type": "text"
 					}
 				],
@@ -1040,6 +1402,30 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const loginRequest = {\r",
+							"    url: 'http://localhost:8080/api/v2/auth/login',\r",
+							"    method: 'POST',\r",
+							"    header: 'Content-Type: application/json',\r",
+							"    body: {\r",
+							"        mode: 'application/json',\r",
+							"        raw: JSON.stringify({        \r",
+							"            \"username\": \"tester\",\r",
+							"            \"password\": \"test\"\r",
+							"        })\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(loginRequest, function (err, response) {\r",
+							"    pm.environment.set(\"ACCESS_TOKEN\", response.json().token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -1047,7 +1433,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sImlhdCI6MTY4NjEzMjk5MSwiZXhwIjoxNjg2MTM2NTkxfQ.NwQhqoy9qFxGIgjnj7vSOVd_LGYs5VlPtDJBVLDBRNI",
+						"value": "Bearer_{{ACCESS_TOKEN}}",
 						"type": "text"
 					}
 				],
@@ -1085,6 +1471,30 @@
 						],
 						"type": "text/javascript"
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const loginRequest = {\r",
+							"    url: 'http://localhost:8080/api/v2/auth/login',\r",
+							"    method: 'POST',\r",
+							"    header: 'Content-Type: application/json',\r",
+							"    body: {\r",
+							"        mode: 'application/json',\r",
+							"        raw: JSON.stringify({        \r",
+							"            \"username\": \"tester\",\r",
+							"            \"password\": \"test\"\r",
+							"        })\r",
+							"    }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest(loginRequest, function (err, response) {\r",
+							"    pm.environment.set(\"ACCESS_TOKEN\", response.json().token);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
 				}
 			],
 			"request": {
@@ -1092,7 +1502,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer_eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0ZXIiLCJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sImlhdCI6MTY4NjEzMjk5MSwiZXhwIjoxNjg2MTM2NTkxfQ.NwQhqoy9qFxGIgjnj7vSOVd_LGYs5VlPtDJBVLDBRNI",
+						"value": "Bearer_{{ACCESS_TOKEN}}",
 						"type": "text"
 					}
 				],
@@ -1106,7 +1516,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/v2/admin/users/delete/3",
+					"raw": "http://localhost:8080/api/v2/admin/users/delete/4",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -1118,7 +1528,7 @@
 						"admin",
 						"users",
 						"delete",
-						"3"
+						"4"
 					]
 				}
 			},
