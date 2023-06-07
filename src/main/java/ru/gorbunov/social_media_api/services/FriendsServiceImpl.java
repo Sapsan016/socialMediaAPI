@@ -44,7 +44,6 @@ public class FriendsServiceImpl implements FriendsService {
 
     @Override
     public void confirmFriendship(Long userId, Long friendId, String friendshipStatus) {
-        checkFriends(userId, friendId);
         friendsRepository.confirmOrRejectFriendship(userId, friendId, friendshipStatus);
         eventRepository.save(new Event(null, LocalDateTime.now(), getUserById(userId), EventType.FRIEND,
                 Operation.CONFIRM, friendId));

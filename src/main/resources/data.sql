@@ -9,6 +9,7 @@ delete from user_friends;
 
 ALTER TABLE posts ALTER COLUMN post_id RESTART WITH 1;
 ALTER TABLE events ALTER COLUMN event_id RESTART WITH 1;
+ALTER TABLE users ALTER COLUMN user_id RESTART WITH 3;
 
 
 
